@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.PrintSetActivity">
+        <include
+            android:id="@+id/il_title"
+            layout="@layout/base_title" />
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_bar_high"
+            android:background="@drawable/bg_edit"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="18dp"
+                android:text="@string/print_width"
+                android:textSize="14sp"
+                android:layout_marginStart="14.5dp"/>
+
+            <EditText
+                android:id="@+id/print_w_edt"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="14dp"
+                android:layout_marginEnd="14dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="@string/print_width_hint"
+                android:singleLine="true"
+                android:textSize="14sp" />
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_text_line" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_bar_high"
+            android:background="@drawable/bg_edit"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="18dp"
+                android:text="@string/print_height"
+                android:textSize="14sp"
+                android:layout_marginStart="14.5dp"/>
+
+            <EditText
+                android:id="@+id/print_h_edt"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="14dp"
+                android:layout_marginEnd="14dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="@string/print_height_hint"
+                android:singleLine="true"
+                android:textSize="14sp" />
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_text_line" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_bar_high"
+            android:background="@drawable/bg_edit"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="18dp"
+                android:text="@string/print_gray"
+                android:textSize="14sp"
+                android:layout_marginStart="14.5dp"/>
+
+            <Spinner
+                android:layout_marginStart="@dimen/dp_20"
+                android:id="@+id/spinner_gray"
+                android:layout_width="@dimen/dp_80"
+                android:layout_height="match_parent"
+                android:entries="@array/gray" />
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_text_line" />
+
+        <Button
+            android:id="@+id/print_revise_btn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_bar_high"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/login_btn"
+            android:text="@string/revise_paper"
+            android:textColor="@color/color_white"
+            android:textSize="18sp" />
+    </LinearLayout>
+</layout>

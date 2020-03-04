@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="zhonglei">
+        <item >损伤性</item>
+        <item >病理性</item>
+        <item >化学性</item>
+        <item >感染性</item>
+        <item >其他类</item>
+     </string-array>
+    <string-array name="keshi">
+        <item >动物实验</item>
+        <item >外科</item>
+        <item >内科</item>
+        <item >神经科</item>
+        <item >产科</item>
+        <item >儿科</item>
+
+    </string-array>
+
+    <string-array name="gray">
+        <item >3</item>
+        <item >4</item>
+        <item >5</item>
+        <item >6</item>
+        <item >7</item>
+        <item >8</item>
+        <item >9</item>
+    </string-array>
+    <string-array name="ruiku_dialog">
+        <item >库房A</item>
+        <item >库房B</item>
+        <item >库房C</item>
+        <item >库房D</item>
+    </string-array>
+</resources>

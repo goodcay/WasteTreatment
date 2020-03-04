@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_background"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/il_title"
+            layout="@layout/base_title" />
+        <LinearLayout
+            android:id="@+id/ll_xingming"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_bar_high"
+            android:background="@drawable/bg_edit"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/dp_25"
+                android:layout_height="@dimen/dp_25"
+                android:layout_marginStart="14.5dp"
+                android:src="@mipmap/xingming" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="@string/xingming"
+                android:gravity="center_vertical"
+                android:textSize="14sp" />
+            <TextView
+                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_20"
+                android:text="张三"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_text_line" />
+        <LinearLayout
+            android:id="@+id/ll_change_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_bar_high"
+            android:background="@drawable/bg_edit"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/dp_25"
+                android:layout_height="@dimen/dp_25"
+                android:layout_marginStart="14.5dp"
+                android:src="@mipmap/pwd_set" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="@string/change_pwd"
+                android:gravity="center_vertical"
+                android:textSize="14sp" />
+            <ImageView
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:src="@mipmap/next"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_text_line" />
+
+        <LinearLayout
+            android:id="@+id/ll_print_set"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_bar_high"
+            android:background="@drawable/bg_edit"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:layout_marginStart="17dp"
+                android:src="@mipmap/print_set" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginStart="10.5dp"
+                android:text="@string/print_set"
+                android:gravity="center_vertical"
+                android:textSize="14sp" />
+            <ImageView
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:src="@mipmap/next"/>
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_text_line" />
+        <LinearLayout
+            android:id="@+id/ll_lixiankefu"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_bar_high"
+            android:background="@drawable/bg_edit"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/dp_25"
+                android:layout_height="@dimen/dp_25"
+                android:layout_marginStart="14.5dp"
+                android:src="@mipmap/kefu" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="@string/kefu"
+                android:gravity="center_vertical"
+                android:textSize="14sp" />
+            <TextView
+                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_20"
+                android:text="028-87393250"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_text_line" />
+
+        <Button
+            android:id="@+id/login_btn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_bar_high"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/login_btn"
+            android:text="@string/login_out"
+            android:textColor="@color/color_white"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+</layout>
+

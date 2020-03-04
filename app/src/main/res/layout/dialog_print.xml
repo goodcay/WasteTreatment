@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/rl_print"
+            android:padding="@dimen/dp_10"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_170">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toStartOf="@+id/qr_code_img"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_30"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:textSize="@dimen/print_text"
+                        android:layout_width="@dimen/print_01"
+                        android:layout_height="@dimen/dp_30"
+                        android:textColor="@color/color_black"
+                        android:text="类    型：" />
+
+                    <EditText
+                        android:id="@+id/edt_lx"
+                        android:textSize="@dimen/print_text"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_30"
+                        android:background="@null"
+                        android:text="A类废物" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_30"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/print_01"
+                        android:layout_height="@dimen/dp_30"
+                        android:textSize="@dimen/print_text"
+
+                        android:textColor="@color/color_black"
+                        android:text="名    称：" />
+
+                    <EditText
+                        android:id="@+id/edt_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textSize="@dimen/print_text"
+
+                        android:background="@null"
+                        android:text="测试废物" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_30"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/print_01"
+                        android:layout_height="@dimen/dp_30"
+                        android:textSize="@dimen/print_text"
+
+                        android:textColor="@color/color_black"
+                        android:text="ID    号：" />
+
+                    <EditText
+                        android:id="@+id/edt_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textSize="@dimen/print_text"
+
+                        android:background="@null"
+                        android:text="397641923" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_30"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/print_01"
+                        android:textSize="@dimen/print_text"
+
+                        android:layout_height="@dimen/dp_30"
+                        android:textColor="@color/color_black"
+                        android:text="操作员：" />
+
+                    <EditText
+                        android:id="@+id/edt_cll"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:textSize="@dimen/print_text"
+
+                        android:text="张三" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_30"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/print_01"
+                        android:layout_height="@dimen/dp_30"
+                        android:textSize="@dimen/print_text"
+
+                        android:textColor="@color/color_black"
+
+                        android:text="时    间：" />
+
+                    <EditText
+                        android:id="@+id/edt_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:textSize="@dimen/print_text"
+
+                        android:text="2020年1月9日" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/qr_code_img"
+                android:layout_width="@dimen/dp_150"
+                android:layout_height="@dimen/dp_150"
+                android:layout_alignParentEnd="true" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_scqr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="生产二维码" />
+
+            <Button
+                android:id="@+id/btn_print"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="打印" />
+            <Button
+                android:id="@+id/btn_step"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="走纸" />
+        </LinearLayout>
+        <EditText
+            android:id="@+id/edt_w"
+            android:layout_width="@dimen/dp_90"
+            android:layout_height="@dimen/dp_40"
+            android:hint="宽度"/>
+        <EditText
+            android:id="@+id/edt_h"
+            android:layout_width="@dimen/dp_90"
+            android:layout_height="@dimen/dp_40"
+            android:hint="高度"/>
+        <ImageView
+            android:id="@+id/img111"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+</layout>
