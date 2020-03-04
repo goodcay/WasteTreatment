@@ -18,7 +18,7 @@
             android:text="入库库房："/>
         <Spinner
             android:id="@+id/rui_spinner"
-            android:layout_width="@dimen/dp_150"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:entries="@array/ruiku_dialog"
             />

@@ -16,9 +16,14 @@
     <string name="zhonglei">种类:</string>
     <string name="keshi">科室:</string>
     <string name="zhongliang">重量:</string>
-    <string name="entering_title">医废收集</string>
+    <string name="collect_title">医废收集</string>
     <string name="login_up_text">上传</string>
     <string name="quanxuan">全选</string>
+    <string name="hint_zhongliang">请输入重量（单位KG）</string>
+    <string name="hint_feiwumingcheng">请输入废物名称</string>
+
+    <string name="mingcheng">名称</string>
+
     <string name="ruiku">入库</string>
     <string name="chuku">出库</string>
 

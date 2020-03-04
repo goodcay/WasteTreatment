@@ -90,9 +90,9 @@
                 android:layout_marginStart="14.5dp"/>
 
             <Spinner
-                android:layout_marginStart="@dimen/dp_20"
+                android:layout_marginStart="20dp"
                 android:id="@+id/spinner_gray"
-                android:layout_width="@dimen/dp_80"
+                android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:entries="@array/gray" />
         </LinearLayout>
