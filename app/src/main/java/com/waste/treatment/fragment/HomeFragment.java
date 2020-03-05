@@ -17,6 +17,7 @@ import com.waste.treatment.databinding.FragmentHomeBinding;
 import com.waste.treatment.ui.CollectActivity;
 import com.waste.treatment.ui.ListViewActivity;
 import com.waste.treatment.ui.RuiKuActivity;
+import com.waste.treatment.ui.TestPrintActivity;
 import com.waste.treatment.util.Utils;
 
 public class HomeFragment extends Fragment {
@@ -50,6 +51,13 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), RuiKuActivity.class));
+            }
+        });
+        mBinding.enteringBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), TestPrintActivity.class));
+
             }
         });
 
