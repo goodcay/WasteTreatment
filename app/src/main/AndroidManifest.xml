@@ -27,7 +27,7 @@
         <activity android:name=".ui.PrintSetActivity" />
         <activity android:name=".ui.ChangePasswordActivity" />
         <activity android:name=".ui.TestFramgeActivity" />
-        <activity android:name=".ui.TestActivity" />
+        <activity android:name=".ui.TestPrintActivity" />
         <activity android:name=".ui.CollectActivity" />
         <activity android:name=".ui.MapActivity" />
         <activity android:name=".ui.ImgActivity" />

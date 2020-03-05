@@ -17,7 +17,7 @@ import com.waste.treatment.util.Utils;
 
 import hardware.print.printer;
 
-public class TestActivity extends AppCompatActivity {
+public class TestPrintActivity extends AppCompatActivity {
     printer mPrinter;
     private DialogPrintBinding mBinding;
 
@@ -30,7 +30,7 @@ public class TestActivity extends AppCompatActivity {
         mBinding.btnScqr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mBinding.qrCodeImg.setImageBitmap(QRCodeEncoder.syncEncodeQRCode(mBinding.edtId.getText().toString(), BGAQRCodeUtil.dp2px(TestActivity.this, 150)));
+                mBinding.qrCodeImg.setImageBitmap(QRCodeEncoder.syncEncodeQRCode(mBinding.edtId.getText().toString(), BGAQRCodeUtil.dp2px(TestPrintActivity.this, 150)));
             }
         });
         mBinding.btnPrint.setOnClickListener(new View.OnClickListener() {
@@ -41,11 +41,15 @@ public class TestActivity extends AppCompatActivity {
                 mBinding.edtId.clearFocus();
                 mBinding.edtName.clearFocus();
                 mBinding.edtTime.clearFocus();
-                Bitmap bitmap = Utils.getViewToBitmap(mBinding.rlPrint, Integer.parseInt(mBinding.edtW.getText().toString().trim()), Integer.parseInt(mBinding.edtH.getText().toString().trim()));
+                String w = mBinding.edtW.getText().toString().trim();
+                String h = mBinding.edtH.getText().toString().trim();
+                Log.d(WasteTreatmentApplication.TAG,"H:"+h+"        W:"+w);
+                Bitmap bitmap = Utils.getViewToBitmap(mBinding.rlPrint, Integer.parseInt(w), Integer.parseInt(h));
                 if (printer.Open() == 0) {
                     mBinding.img111.setImageBitmap(bitmap);
                     if (bitmap!=null){
                         mPrinter.PrintBitmap(bitmap);
+                        printer.Step((byte) 0x3f);
                         mPrinter.PrintLineEnd();
                     }
 
