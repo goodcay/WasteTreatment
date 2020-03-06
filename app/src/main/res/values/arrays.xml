@@ -8,12 +8,12 @@
         <item >其他类</item>
      </string-array>
     <string-array name="keshi">
-        <item >动物实验</item>
-        <item >外科</item>
-        <item >内科</item>
-        <item >神经科</item>
-        <item >产科</item>
-        <item >儿科</item>
+        <item >A公司</item>
+        <item >B公司</item>
+        <item >C公司</item>
+        <item >D公司</item>
+        <item >E公司</item>
+        <item >F公司</item>
 
     </string-array>
 

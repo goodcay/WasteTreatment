@@ -13,7 +13,6 @@ import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.waste.treatment.R;
@@ -32,6 +31,7 @@ public class MapActivity extends AppCompatActivity {
         mapBinding = DataBindingUtil.setContentView(this,R.layout.activity_map);
         getPermission();
         initLocation();
+
         mapBinding.baiduMap.getMap().setMyLocationEnabled(true);
         MyLocationConfiguration myLocationConfiguration = new MyLocationConfiguration(MyLocationConfiguration.LocationMode.FOLLOWING,false, null,R.color.color_btn,R.color.color_333333);
         mapBinding.baiduMap.getMap().setMyLocationEnabled(true);
@@ -83,18 +83,26 @@ public class MapActivity extends AppCompatActivity {
 
         //通过LocationClientOption设置LocationClient相关参数
         LocationClientOption option = new LocationClientOption();
+        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);//设置高精度
         option.setOpenGps(true); // 打开gps
         option.setCoorType("bd09ll"); // 设置坐标类型
-        option.setScanSpan(1000);
+        option.setScanSpan(1000);//请求间隔时间
+        option.setLocationNotify(true);//GPS有效时  按照1s 输出GPS 结果
+
+        //option.setIgnoreKillProcess(true);
+        //可选，定位SDK内部是一个service，并放到了独立进程 。
+        //设置是否在stop的时候杀死这个进程，默认（建议）不杀死，即setIgnoreKillProcess(true)
 
         //设置locationClientOption
         mLocationClient.setLocOption(option);
+
+
 
         //注册LocationListener监听器
         MyLocationListener myLocationListener = new MyLocationListener();
         mLocationClient.registerLocationListener(myLocationListener);
         //开启地图定位图层
-        mLocationClient.start();
+        mLocationClient.restart();
     }
 
 

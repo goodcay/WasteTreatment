@@ -10,6 +10,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+<!--
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_280"
@@ -68,6 +69,7 @@
                     android:gravity="center">
 
                     <ImageView
+                        android:id="@+id/img_gps"
                         android:layout_width="@dimen/dp_55"
                         android:layout_height="@dimen/dp_55"
                         android:src="@mipmap/yunshuzhong" />
@@ -103,6 +105,20 @@
 
             </LinearLayout>
         </LinearLayout>
+-->
+       <!-- <com.baidu.mapapi.map.MapView
+            android:id="@+id/baidu_map"
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:clickable="true"/>-->
+        <include
+            android:id="@+id/il_title"
+            layout="@layout/base_title" />
+        <LinearLayout
+            android:id="@+id/ll_baidu_map"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:orientation="vertical"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="100dp"
@@ -212,12 +228,12 @@
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@mipmap/tongji" />
+                    android:src="@mipmap/xiaohui" />
                 <TextView
                     android:layout_marginTop="@dimen/dp_5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="报表统计"
+                    android:text="医废销毁"
                     android:textSize="12sp"
                     android:textColor="@color/color_btn"/>
             </LinearLayout>

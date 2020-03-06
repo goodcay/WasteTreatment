@@ -4,25 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.waste.treatment.R;
-import com.waste.treatment.WasteTreatmentApplication;
 import com.waste.treatment.databinding.ActivityPrintSetBinding;
 import com.waste.treatment.util.SharedPreferencesUtil;
 import com.waste.treatment.util.Utils;
 
 import hardware.print.printer;
 
-import static android.util.TypedValue.COMPLEX_UNIT_DIP;
-import static android.util.TypedValue.COMPLEX_UNIT_IN;
-import static android.util.TypedValue.COMPLEX_UNIT_MM;
-import static android.util.TypedValue.COMPLEX_UNIT_PT;
-import static android.util.TypedValue.COMPLEX_UNIT_SP;
 
 public class PrintSetActivity extends AppCompatActivity {
     ActivityPrintSetBinding mBinding;
@@ -50,8 +43,6 @@ public class PrintSetActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 gray =position;
-
-                Log.d(WasteTreatmentApplication.TAG,"cccccc"+gray);
 
             }
 
@@ -82,15 +73,11 @@ public class PrintSetActivity extends AppCompatActivity {
             }
         });
 
-        mBinding.printReviseBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    }
 
-
-
-
-            }
-        });
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        printer.Close();
     }
 }

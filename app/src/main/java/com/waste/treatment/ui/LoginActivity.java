@@ -32,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
                 }else {
                     if (mBinding.loginNameEdt.getText().toString().trim().equals("abc")&&mBinding.loginPwdEdt.getText().toString().trim().equals("123")){
 
-                        startActivity(new Intent(LoginActivity.this, TestFramgeActivity.class));
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         finish();
                     }else {
                         mBinding.errorLl.setVisibility(View.VISIBLE);

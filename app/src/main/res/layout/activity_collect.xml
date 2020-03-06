@@ -63,12 +63,32 @@
                     android:textSize="14sp"
                     android:layout_marginStart="14.5dp"/>
 
-                <Spinner
+                <LinearLayout
                     android:id="@+id/sp_zl"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:entries="@array/zhonglei"
-                    android:textSize="14sp" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:textSize="14sp" >
+                    <LinearLayout
+                        android:id="@+id/ll_zhongnei"
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content">
+                       <!-- <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="兔子"/>
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="老鼠"/>
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="青蛙"/>-->
+                    </LinearLayout>
+                    
+                </LinearLayout>
             </LinearLayout>
             <TextView
                 android:layout_width="match_parent"
@@ -99,7 +119,6 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:hint="@string/hint_feiwumingcheng"
-                    android:inputType="textPassword"
                     android:singleLine="true"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -130,8 +149,8 @@
                     android:layout_marginEnd="14dp"
                     android:layout_weight="1"
                     android:background="@null"
+                    android:inputType="number|numberDecimal"
                     android:hint="@string/hint_zhongliang"
-                    android:inputType="textPassword"
                     android:singleLine="true"
                     android:textSize="14sp" />
 
@@ -158,8 +177,10 @@
                 <ImageView
                     android:id="@+id/img_btn_del"
                     android:visibility="invisible"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_alignParentEnd="true"
                     android:src="@mipmap/cha"/>
                 <ImageView
@@ -171,7 +192,7 @@
             </RelativeLayout>
 
             <Button
-                android:id="@+id/login_btn"
+                android:id="@+id/up_data_btn"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/title_bar_high"
                 android:layout_marginStart="15dp"

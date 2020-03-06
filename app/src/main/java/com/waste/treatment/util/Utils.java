@@ -9,6 +9,8 @@ import android.graphics.Matrix;
 import android.icu.text.CaseMap;
 import android.net.Uri;
 import android.os.Build;
+import android.text.TextUtils;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +23,12 @@ import com.waste.treatment.BuildConfig;
 import com.waste.treatment.WasteTreatmentApplication;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
@@ -37,6 +45,10 @@ import static android.util.TypedValue.COMPLEX_UNIT_SP;
 
 public class Utils {
     private static Context context;
+    public final static int DATE_YMD=01;
+    public final static int DATE_MD=02;
+    public final static int DATE_TIME=03;
+    public final static int DATE_DATE=00;
 
     /**
      * 初始化工具类
@@ -180,7 +192,7 @@ public class Utils {
 
     }
 
-    public static String getMonthDay() {
+    public static String getDate(int type) {
 
 
         Calendar calendar = Calendar.getInstance();
@@ -198,7 +210,19 @@ public class Utils {
         int minute = calendar.get(Calendar.MINUTE);
         //秒
         int second = calendar.get(Calendar.SECOND);
-        return month + "月" + day + "日";
+        switch (type){
+            case DATE_MD:
+                return month + "月" + day + "日";
+            case DATE_YMD:
+                return year+"年"+month + "月" + day + "日";
+            case DATE_TIME:
+                return hour+":"+minute+":"+second;
+            case DATE_DATE:
+                return year+"-"+month+"-"+day+" "+ hour+":"+minute+":"+second;
+            default:
+                return year+month+day+hour+minute+second+"";
+
+        }
 
         // time2.setText("Calendar获取当前日期"+year+"年"+month+"月"+day+"日"+hour+":"+minute+":"+second);
 
@@ -221,6 +245,69 @@ public class Utils {
         }
         return 0;
     }
+    /**
+     * 将图片转换成Base64编码的字符串
+     */
+    public static String imageToBase64(String path){
+        if(TextUtils.isEmpty(path)){
+            return null;
+        }
+        InputStream is = null;
+        byte[] data = null;
+        String result = null;
+        try{
+            is = new FileInputStream(path);
+            //创建一个字符流大小的数组。
+            data = new byte[is.available()];
+            //写入数组
+            is.read(data);
+            //用默认的编码格式进行编码
+            result = Base64.encodeToString(data,Base64.NO_WRAP);
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            if(null !=is){
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
 
+        }
+        return result;
+    }
+    /**
+     * 将Base64编码转换为图片
+     * @param base64Str
+     * @param path
+     * @return true
+     */
+    public static boolean base64ToFile(String base64Str,String path) {
+        byte[] data = Base64.decode(base64Str,Base64.NO_WRAP);
+        for (int i = 0; i < data.length; i++) {
+            if(data[i] < 0){
+                //调整异常数据
+                data[i] += 256;
+            }
+        }
+        OutputStream os = null;
+        try {
+            os = new FileOutputStream(path);
+            os.write(data);
+            os.flush();
+            os.close();
+            return true;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }catch (IOException e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public  static int  getSixNumber(){
+        return (int) ((Math.random() * 9 + 1) * 100000);
+    }
 
 }

@@ -23,7 +23,7 @@ public class PrintActivity extends AppCompatActivity {
         mBinding.printBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               int result = mPrinter.Open();
+               int result = printer.Open();
                if (result==0){
                    mPrinter.PrintLineInit(50);
                    mPrinter.PrintLineStringByType(mBinding.printEdt.getText().toString(),40, printer.PrintType.Centering,false);

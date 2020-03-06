@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 
 import com.waste.treatment.R;
@@ -69,5 +70,6 @@ public class TestPrintActivity extends AppCompatActivity {
 
 
     }
+
 
 }
