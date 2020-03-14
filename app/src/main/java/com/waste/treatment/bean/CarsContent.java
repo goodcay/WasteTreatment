@@ -1,6 +1,6 @@
 package com.waste.treatment.bean;
 
-public class CarsBean {
+public class CarsContent {
     private String Name;
     private int Oid;
 

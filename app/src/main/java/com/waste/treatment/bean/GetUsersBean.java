@@ -1,27 +1,19 @@
 package com.waste.treatment.bean;
 
-public class Success {
+public class GetUsersBean {
     private boolean IsSuccess;
     private String ErrorMsg;
-    private String Content;
+    private UserContent Content;
 
-
-    @Override
-    public String toString() {
-        return "Success{" +
-                "IsSuccess='" + IsSuccess + '\'' +
-                ", ErrorMsg='" + ErrorMsg + '\'' +
-                ", Content='" + Content + '\'' +
-                '}';
-    }
 
     public boolean getIsSuccess() {
         return IsSuccess;
     }
 
     public void setIsSuccess(boolean isSuccess) {
-         IsSuccess =isSuccess;
+        IsSuccess =isSuccess;
     }
+
 
     public String getErrorMsg() {
         return ErrorMsg;
@@ -31,11 +23,20 @@ public class Success {
         ErrorMsg = errorMsg;
     }
 
-    public String getContent() {
+    public UserContent getContent() {
         return Content;
     }
 
-    public void setContent(String content) {
+    public void setContent(UserContent content) {
         Content = content;
+    }
+
+    @Override
+    public String toString() {
+        return "GetUsersBean{" +
+                "IsSuccess=" + IsSuccess +
+                ", ErrorMsg='" + ErrorMsg + '\'' +
+                ", Content=" + Content +
+                '}';
     }
 }

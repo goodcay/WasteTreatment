@@ -36,6 +36,7 @@
                 android:layout_height="40dp"
                 android:layout_marginStart="14dp"
                 android:background="@null"
+                android:inputType="number"
                 android:hint="@string/login_name_hint"
                 android:singleLine="true"
                 android:textSize="14sp" />

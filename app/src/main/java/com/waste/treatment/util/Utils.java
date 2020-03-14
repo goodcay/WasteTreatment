@@ -1,8 +1,11 @@
 package com.waste.treatment.util;
 
+import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -17,6 +20,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import com.waste.treatment.BuildConfig;
@@ -32,8 +37,10 @@ import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Logger;
 
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
@@ -49,7 +56,16 @@ public class Utils {
     public final static int DATE_MD=02;
     public final static int DATE_TIME=03;
     public final static int DATE_DATE=00;
-
+    AlertDialog
+    /**
+     *  读写权限  自己可以添加需要判断的权限
+     */
+    public static String[] permissionsREAD={
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.CAMERA,
+            Manifest.permission.ACCESS_FINE_LOCATION
+};
     /**
      * 初始化工具类
      *
@@ -308,6 +324,51 @@ public class Utils {
     }
     public  static int  getSixNumber(){
         return (int) ((Math.random() * 9 + 1) * 100000);
+    }
+    public static void getPermission( Activity context) {
+
+        //添加这下面的一部分
+        //动态申请权限
+        List<String> permissionList = new ArrayList<>();
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            permissionList.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            permissionList.add(Manifest.permission.READ_PHONE_STATE);
+        }
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            permissionList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            permissionList.add(Manifest.permission.CAMERA);
+        }
+        if (!permissionList.isEmpty()) {
+            String[] permissions = permissionList.toArray(new String[permissionList.size()]);
+            ActivityCompat.requestPermissions(context, permissions, 1);
+        }
+
+    }
+
+    /**
+     * 判断权限集合
+     * permissions 权限数组
+     * return true-表示没有改权限  false-表示权限已开启
+     */
+    public static boolean lacksPermissions(Context mContexts,String[] permissions) {
+        for (String permission : permissions) {
+            if (lacksPermission(mContexts, permission)) {
+                return true;
+            }
+        }
+        return false;
+
+    }
+    /**
+     * 判断是否缺少权限
+     */
+    private static boolean lacksPermission(Context mContexts, String permission) {
+        return ContextCompat.checkSelfPermission(mContexts, permission) ==
+                PackageManager.PERMISSION_DENIED;
     }
 
 }

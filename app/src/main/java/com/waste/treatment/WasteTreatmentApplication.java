@@ -4,10 +4,22 @@ import android.app.Application;
 import com.baidu.mapapi.CoordType;
 import com.baidu.mapapi.SDKInitializer;
 import com.waste.treatment.http.HttpUtils;
-import com.waste.treatment.util.SharedPreferencesUtil;
 import com.waste.treatment.util.Utils;
 
 public class WasteTreatmentApplication extends Application {
+    public  String userName;
+    public   String userId;
+
+    public void setLoginMsg(String userName, String userId) {
+        this.userName = userName;
+        this.userId = userId;
+    }
+    public String getUserName (){
+        return userName;
+    }
+    public String getUserId(){
+        return userId;
+    }
     public final static String TAG ="CAY";
     public static WasteTreatmentApplication instance;
     @Override

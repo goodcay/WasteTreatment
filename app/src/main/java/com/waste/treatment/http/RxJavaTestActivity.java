@@ -7,11 +7,9 @@ import android.util.Log;
 
 import com.waste.treatment.R;
 import com.waste.treatment.WasteTreatmentApplication;
-import com.waste.treatment.bean.CarsBean;
+import com.waste.treatment.bean.CarsContent;
 import com.waste.treatment.bean.GetCarsBean;
-import com.waste.treatment.bean.Success;
 import com.waste.treatment.bean.newsBean;
-import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -32,18 +30,18 @@ public class RxJavaTestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rx_java_test);
-        testJuhePost();
+       // testJuhePost();
 
-        HttpUtils.getInstance().geData().getCars().map(new Function<GetCarsBean, List<CarsBean>>() {
+        HttpUtils.getInstance().geData().getCars().map(new Function<GetCarsBean, List<CarsContent>>() {
 
             @Override
-            public List<CarsBean> apply(GetCarsBean getCarsBean) throws Exception {
+            public List<CarsContent> apply(GetCarsBean getCarsBean) throws Exception {
                 return getCarsBean.getContent();
             }
 
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<CarsBean>>() {
+                .subscribe(new Observer<List<CarsContent>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         Log.d(WasteTreatmentApplication.TAG, "onSubscribe");
@@ -51,7 +49,7 @@ public class RxJavaTestActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onNext(List<CarsBean> carsBeans) {
+                    public void onNext(List<CarsContent> carsBeans) {
 
                         Log.d(WasteTreatmentApplication.TAG, "onNext" + carsBeans.get(0).getName());
 
@@ -69,7 +67,7 @@ public class RxJavaTestActivity extends AppCompatActivity {
 
                     }
                 });
-
+/*
         HttpUtils.getInstance().geData().addPos(1,"1.3","1.6").subscribeOn(Schedulers.io())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -95,7 +93,7 @@ public class RxJavaTestActivity extends AppCompatActivity {
             public void onComplete() {
 
             }
-        });
+        });*/
 
        /*
         OkHttpUtils.get().url("http://192.168.121.59/WhhService.asmx/GetCars").build().execute(new StringCallback() {
@@ -182,6 +180,7 @@ public class RxJavaTestActivity extends AppCompatActivity {
     }
 
 
+/*
     private void testJuhePost(){
 
         HttpUtils.getInstance().getmJuHeClient().getTouTiao("f9141352fe34615b0806e9fd943f9dbd","top").subscribeOn(Schedulers.io())
@@ -214,4 +213,5 @@ public class RxJavaTestActivity extends AppCompatActivity {
                     }
                 });
     }
+*/
 }

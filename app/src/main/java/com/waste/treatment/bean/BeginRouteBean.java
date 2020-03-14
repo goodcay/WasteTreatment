@@ -1,8 +1,9 @@
 package com.waste.treatment.bean;
 
 import java.util.List;
-public class GetCarsBean {
-    private List<CarsContent> Content;
+
+public class BeginRouteBean {
+    private RouteBean Content;
     private boolean IsSuccess;
     private String ErrorMsg;
 
@@ -24,11 +25,11 @@ public class GetCarsBean {
         ErrorMsg = errorMsg;
     }
 
-    public List<CarsContent> getContent() {
+    public RouteBean getContent() {
         return Content;
     }
 
-    public void setContent(List<CarsContent> content) {
+    public void setContent(RouteBean content) {
         Content = content;
     }
 
@@ -37,7 +38,8 @@ public class GetCarsBean {
         IsSuccess =isSuccess;
     }
     public boolean getIsSuccess() {
-       return IsSuccess;
+        return IsSuccess;
     }
 
 }
+

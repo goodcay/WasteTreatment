@@ -9,9 +9,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.MergedDataBinderMapper;
 import androidx.fragment.app.Fragment;
 
 import com.waste.treatment.R;
+import com.waste.treatment.WasteTreatmentApplication;
 import com.waste.treatment.databinding.FragmentSetBinding;
 import com.waste.treatment.ui.ChangePasswordActivity;
 import com.waste.treatment.ui.PrintSetActivity;
@@ -29,6 +31,7 @@ public class MeFargment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+      //  mBinding.tvIdName.setText(WasteTreatmentApplication.instance.userName);
         mBinding.ilTitle.tvTitle.setText(getResources().getString(R.string.me));
         mBinding.llChangePwd.setOnClickListener(new View.OnClickListener() {
             @Override

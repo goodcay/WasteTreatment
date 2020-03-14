@@ -21,7 +21,10 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.waste.treatment.R;
 import com.waste.treatment.WasteTreatmentApplication;
+import com.waste.treatment.bean.GetCarsBean;
+import com.waste.treatment.bean.GetTypesBean;
 import com.waste.treatment.databinding.ActivityCollectBinding;
+import com.waste.treatment.http.HttpUtils;
 import com.waste.treatment.util.Tips;
 import com.waste.treatment.util.Utils;
 import com.wildma.pictureselector.PictureSelector;
@@ -30,6 +33,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class CollectActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
     private ActivityCollectBinding mBinding;
@@ -46,11 +54,7 @@ public class CollectActivity extends AppCompatActivity implements CompoundButton
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_collect);
         mBinding.ilTitle.tvTitle.setText(getResources().getString(R.string.collect_title));
         mBinding.ilTitle.ivBack.setVisibility(View.VISIBLE);
-        aihao.add("兔子");
-        aihao.add("老鼠");
-        aihao.add("青蛙");
-        aihao.add("公鸡");
-        aihao.add("母鸡");
+
         mBinding.ilTitle.ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,7 +65,7 @@ public class CollectActivity extends AppCompatActivity implements CompoundButton
             @Override
             public void onClick(View v) {
                 PictureSelector.create(CollectActivity.this, PictureSelector.SELECT_REQUEST_CODE).selectPicture(false, 200, 200, 1, 1);
-                ;
+
 
             }
         });
@@ -71,6 +75,8 @@ public class CollectActivity extends AppCompatActivity implements CompoundButton
                 delImg(false, null);
             }
         });
+
+
         for (int i = 0; i < aihao.size(); i++) {
             CheckBox cb = new CheckBox(this);
             cb.setText(aihao.get(i));
@@ -188,31 +194,67 @@ public class CollectActivity extends AppCompatActivity implements CompoundButton
     int yourChoice;
 
     private void showSingleChoiceDialog() {
-        final String[] items = {"川A·88888", "川A·66666", "川A·99999", "川A·12345"};
-        yourChoice = -1;
-        AlertDialog.Builder singleChoiceDialog =
-                new AlertDialog.Builder(CollectActivity.this);
-        singleChoiceDialog.setTitle("请选择运输车辆");
-        // 第二个参数是默认选项，此处设置为0
-        singleChoiceDialog.setSingleChoiceItems(items, 0,
-                new DialogInterface.OnClickListener() {
+        HttpUtils.getInstance().geData().getCars().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<GetCarsBean>() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        yourChoice = which;
+                    public void onSubscribe(Disposable d) {
+
                     }
-                });
-        singleChoiceDialog.setPositiveButton("确定",
-                new DialogInterface.OnClickListener() {
+
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (yourChoice != -1) {
-                            Toast.makeText(CollectActivity.this,
-                                    "你选择了" + items[yourChoice],
-                                    Toast.LENGTH_SHORT).show();
+                    public void onNext(GetCarsBean getCarsBean) {
+                        Log.d(WasteTreatmentApplication.TAG, "getCarsBean: "+getCarsBean.getContent().get(0).getName());
+                       final String[] items = new String[getCarsBean.getContent().size()];
+
+                        for (int i=0 ;i<getCarsBean.getContent().size();i++){
+                            items[i]=getCarsBean.getContent().get(i).getName();
                         }
+
+
+                    //    final String[] items = {"川A·88888", "川A·66666", "川A·99999", "川A·12345"};
+
+                        // String[] items = getCarsBean.getContent().toArray(new String[getCarsBean.getContent().size()]);
+                        yourChoice = -1;
+                        AlertDialog.Builder singleChoiceDialog =
+                                new AlertDialog.Builder(CollectActivity.this);
+                        singleChoiceDialog.setTitle("请选择运输车辆");
+                        // 第二个参数是默认选项，此处设置为0
+                        singleChoiceDialog.setSingleChoiceItems(items, 0,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        yourChoice = which;
+                                    }
+                                });
+                        singleChoiceDialog.setPositiveButton("确定",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        if (yourChoice != -1) {
+                                            Toast.makeText(CollectActivity.this,
+                                                    "你选择了" + items[yourChoice],
+                                                    Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                        singleChoiceDialog.show();
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
-        singleChoiceDialog.show();
+
+
+
     }
 
     @Override
@@ -231,5 +273,41 @@ public class CollectActivity extends AppCompatActivity implements CompoundButton
         }
 
 
+    }
+
+    private List<String> getTypes (){
+        final List<String> typeList = new ArrayList<>();
+        HttpUtils.getInstance().geData().getTypes()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<GetTypesBean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(GetTypesBean getTypesBean) {
+                        if (getTypesBean.getIsSuccess()){
+                            for (int i=0;i<getTypesBean.getContent().size();i++){
+                                typeList.add(getTypesBean.getContent().get(i).getName());
+
+                            }
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        return typeList;
     }
 }

@@ -65,6 +65,16 @@ public class HttpUtils {
 
         return mWTClient;
     }
+    public RetrofitHttpClient geData1() {
+
+        mWTClient = new Retrofit.Builder().baseUrl("http://127.0.0.1/")
+                .addConverterFactory(FastJsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(getOkHttpClient()).build().create(RetrofitHttpClient.class);
+
+
+        return mWTClient;
+    }
 
     public RetrofitHttpClient getDouBan() {
         if (mMyObservableClient == null) {

@@ -72,6 +72,7 @@ dependencies {
     implementation 'com.zhy:okhttputils:2.6.2'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.0-beta11'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'me.weyye.hipermission:library:1.0.7'
 
 
 }

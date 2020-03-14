@@ -7,12 +7,14 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
 import com.waste.treatment.R;
+import com.waste.treatment.WasteTreatmentApplication;
 import com.waste.treatment.adapter.FragmentIndexAdapter;
 
 import com.waste.treatment.databinding.ActivityTestFramgeBinding;
@@ -131,4 +133,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(WasteTreatmentApplication.TAG, "activity: onResume");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(WasteTreatmentApplication.TAG, "activity: onPause");
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(WasteTreatmentApplication.TAG, "activity: onStop");
+
+    }
 }
