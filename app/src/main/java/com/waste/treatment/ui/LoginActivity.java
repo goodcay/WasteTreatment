@@ -8,13 +8,18 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -40,25 +45,40 @@ import me.weyye.hipermission.HiPermission;
 import me.weyye.hipermission.PermissionCallback;
 
 public class LoginActivity extends AppCompatActivity {
-     private ActivityLoginBinding mBinding;
+    private ActivityLoginBinding mBinding;
     private ProgressDialog waitingDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         Utils.makeStatusBarTransparent(this);
-        mBinding = DataBindingUtil.setContentView(this,R.layout.activity_login);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         mBinding.ilTitle.tvTitle.setText(getResources().getString(R.string.login_btn_text));
-        waitingDialog = DialogUtil.showWaitingDialog(LoginActivity.this ,"正在登陆");
+        waitingDialog = DialogUtil.showWaitingDialog(LoginActivity.this, "正在登陆···");
         mBinding.loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mBinding.loginNameEdt.getText().toString().trim().isEmpty()||mBinding.loginPwdEdt.getText().toString().trim().isEmpty()){
+                if (mBinding.loginNameEdt.getText().toString().trim().isEmpty() || mBinding.loginPwdEdt.getText().toString().trim().isEmpty()) {
 
-                    Toast.makeText(LoginActivity.this,getResources().getString(R.string.login_pwd_null),Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this, getResources().getString(R.string.login_pwd_null), Toast.LENGTH_LONG).show();
 
-                }else {
-                    Log.d(WasteTreatmentApplication.TAG, "onClick: "+Utils.lacksPermissions(LoginActivity.this,Utils.permissionsREAD));
+                } else {
+                    if (Utils.lacksPermissions(LoginActivity.this, Utils.permissionsREAD)) {
+                        ActivityCompat.requestPermissions(LoginActivity.this, Utils.permissionsREAD, 0);
+                    } else {
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+
+                    }
+
+                   /* if ( Utils.getPermission(LoginActivity.this)){
+                        Log.d(WasteTreatmentApplication.TAG, "onClick:AAAA ");
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    }else {
+                        Utils.getPermission(LoginActivity.this);
+                        Log.d(WasteTreatmentApplication.TAG, "onClick:CCC ");
+
+                    }*/
                    /* startActivity(new Intent(LoginActivity.this, MainActivity.class));
 
                    waitingDialog.show();
@@ -114,9 +134,8 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+        ActivityCompat.requestPermissions(LoginActivity.this, Utils.permissionsREAD, 0);
 
-        Utils.getPermission(LoginActivity.this);
-        //getPermission();
        /* HiPermission.create(LoginActivity.this)
                 .animStyle(R.style.PermissionAnimFade)
                 .checkMutiPermission(new PermissionCallback() {
@@ -148,7 +167,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void getUser(String operatorId){
+    private void getUser(String operatorId) {
 
         HttpUtils.getInstance().geData().getUser(operatorId).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -160,11 +179,11 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(GetUsersBean getUsersBean) {
-                        if (getUsersBean.getIsSuccess()){
-                            Log.d(WasteTreatmentApplication.TAG, "getUsersBean: "+getUsersBean.toString());
-                            WasteTreatmentApplication.getInstance().setLoginMsg(getUsersBean.getContent().getChineseName(),Integer.toString(getUsersBean.getContent().getID()));
+                        if (getUsersBean.getIsSuccess()) {
+                            Log.d(WasteTreatmentApplication.TAG, "getUsersBean: " + getUsersBean.toString());
+                            WasteTreatmentApplication.getInstance().setLoginMsg(getUsersBean.getContent().getChineseName(), Integer.toString(getUsersBean.getContent().getID()));
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                           waitingDialog.cancel();
+                            waitingDialog.cancel();
                             finish();
                         }
 
@@ -182,30 +201,59 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-    private void getPermission() {
-
-        //添加这下面的一部分
-        //动态申请权限
-        List<String> permissionList = new ArrayList<>();
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            permissionList.add(Manifest.permission.ACCESS_FINE_LOCATION);
-        }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-            permissionList.add(Manifest.permission.READ_PHONE_STATE);
-        }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            permissionList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        }
-        if (!permissionList.isEmpty()) {
-            String[] permissions = permissionList.toArray(new String[permissionList.size()]);
-            ActivityCompat.requestPermissions(this, permissions, 1);
-        }
-
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Log.d(WasteTreatmentApplication.TAG, "onRequestPermissionsResult: "+"requestCode:"+requestCode+"   permissions:"+permissions.toString() +"  grantResults:"+grantResults.toString());
+        if (requestCode == 0) {
+            for (int i = 0; i < permissions.length; i++) {
+                if (grantResults[i] != -1) {
+                    //T.showShort(mContext,"权限设置成功");
+                    Log.d(WasteTreatmentApplication.TAG, "权限设置成功");
+
+                } else {
+                    //T.showShort(mContext,"拒绝权限");
+                    // 权限被拒绝，弹出dialog 提示去开启权限
+                    showPermissions();
+                    break;
+                }
+            }
+
+        }
+
     }
+
+    //弹出dialog
+    private void showPermissions() {
+        final Dialog dialog = new android.app.AlertDialog.Builder(LoginActivity.this).create();
+        View v = LayoutInflater.from(LoginActivity.this).inflate(R.layout.dialog_permissions, null);
+        dialog.show();
+        dialog.setContentView(v);
+
+        Button btn_add = (Button) v.findViewById(R.id.btn_add);
+        Button btn_diss = (Button) v.findViewById(R.id.btn_diss);
+
+        btn_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                intent.addCategory(Intent.CATEGORY_DEFAULT);
+                intent.setData(Uri.parse("package:" + getPackageName()));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                startActivity(intent);
+            }
+        });
+
+        btn_diss.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+    }
+
 }

@@ -90,9 +90,9 @@ public class CollectActivity extends AppCompatActivity implements CompoundButton
             @Override
             public void onClick(View v) {
 
-                if (map.isEmpty()) {
+               /* if (map.isEmpty()) {
                     Tips.show("请选择种类", Toast.LENGTH_SHORT);
-                } else {
+                } else {*/
                     for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
                         Log.d(WasteTreatmentApplication.TAG, "选择了: " + entry.getValue());
                     }
@@ -105,7 +105,7 @@ public class CollectActivity extends AppCompatActivity implements CompoundButton
                             showNormalDialog();
                         }
                     }, 3000);
-                }
+               /* }*/
 
 
             }
@@ -120,29 +120,26 @@ public class CollectActivity extends AppCompatActivity implements CompoundButton
         if (requestCode == PictureSelector.SELECT_REQUEST_CODE) {
             if (data != null) {
                 String picturePath = data.getStringExtra(PictureSelector.PICTURE_PATH);
-               /* RequestOptions requestOptions = RequestOptions
-                        .circleCropTransform()
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true);*/
-                //Glide.with(this).load(picturePath)/*.apply(requestOptions)*/.into(mBinding.imgPhoto);
                 delImg(true, picturePath);
             }
         }
     }
 
+    /**
+     * 选择照片设置
+     * @param bool  true 设置照片  false 删除照片
+     * @param picturePath 图片地址， 当bool为false 时 填null
+     */
     private void delImg(Boolean bool, String picturePath) {
         if (bool) {
             mBinding.imgBtnDel.setVisibility(View.VISIBLE);
             mBinding.imgBtnPhoto.setVisibility(View.INVISIBLE);
-            Glide.with(this).load(picturePath)/*.apply(requestOptions)*/.into(mBinding.imgPhoto);
-
-            Log.d(WasteTreatmentApplication.TAG, "delImgBase64: ----" + Utils.imageToBase64(picturePath));
+            Glide.with(this).load(picturePath).into(mBinding.imgPhoto);
 
         } else {
             mBinding.imgBtnDel.setVisibility(View.INVISIBLE);
             mBinding.imgBtnPhoto.setVisibility(View.VISIBLE);
             mBinding.imgPhoto.setImageBitmap(null);
-            // Glide.with(this).load(picturePath)/*.apply(requestOptions)*/.into(mBinding.imgPhoto);
         }
 
     }

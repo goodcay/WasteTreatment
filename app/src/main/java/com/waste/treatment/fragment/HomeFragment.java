@@ -1,23 +1,17 @@
 package com.waste.treatment.fragment;
 
-import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
@@ -35,7 +29,6 @@ import com.waste.treatment.bean.BeginRouteBean;
 import com.waste.treatment.bean.GetCarsBean;
 import com.waste.treatment.bean.GetDriverBean;
 import com.waste.treatment.bean.Success;
-import com.waste.treatment.bean.UserContent;
 import com.waste.treatment.databinding.FragmentHomeBinding;
 import com.waste.treatment.http.HttpUtils;
 import com.waste.treatment.ui.CollectActivity;
@@ -45,14 +38,14 @@ import com.waste.treatment.util.Tips;
 import com.waste.treatment.util.Utils;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+
+import static com.waste.treatment.WasteTreatmentApplication.TAG;
 
 public class HomeFragment extends BaseFragment<FragmentHomeBinding>{
     private LocationClient mLocationClient;
@@ -61,25 +54,40 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding>{
     private int carId =0;
     private int driveId =0;
 
-
-
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        Log.d(TAG, "onAttach: ");
+    }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate: ");
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView: ");
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+    @Override
     public int setContent() {
+        Log.d(TAG, "setContent: ");
         return R.layout.fragment_home;
     }
 
     @Override
     protected void loadData() {
         super.loadData();
-        Log.d(WasteTreatmentApplication.TAG, "loadData: ");
+
+
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d(WasteTreatmentApplication.TAG, "onActivityCreated: ");
-
+        Log.d(TAG, "onActivityCreated: ");
 
         bindingView.ilTitle.tvTitle.setText(getResources().getString(R.string.home));
         bindingView.ilTitle.tvRightText.setText(Utils.getDate(Utils.DATE_YMD));
@@ -104,20 +112,18 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding>{
                 startActivity(new Intent(getActivity(), ScanActivity.class));
             }
         });
-        showContentView();
+       // showContentView();
 
-      /*  if (!isGps){
 
             initLocation();
             initBaiDuMap();
-            isGps=true;
-        }
-        showNormalDialog();*/
+       // showNormalDialog();
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        Log.d(TAG, "onStart: ");
 
 
 
@@ -160,7 +166,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding>{
         bindingView.llBaiduMap.addView(mapView);
 
         mapView.getMap().setMyLocationEnabled(true);
-       MyLocationConfiguration myLocationConfiguration = new MyLocationConfiguration(MyLocationConfiguration.LocationMode.FOLLOWING, true, null, 0xAAFFFF88, 0xAA00FF00);
+        MyLocationConfiguration myLocationConfiguration = new MyLocationConfiguration(MyLocationConfiguration.LocationMode.FOLLOWING, true, null, 0xAAFFFF88, 0xAA00FF00);
         mapView.getMap().setMyLocationConfiguration(myLocationConfiguration);
         MapStatus.Builder builder = new MapStatus.Builder();
         builder.zoom(17.0f);
@@ -201,7 +207,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding>{
             //获取定位类型、定位错误返回码，具体信息可参照类参考中BDLocation类中的说明
             int errorCode = location.getLocType();
            // Log.d(WasteTreatmentApplication.TAG, "latitude: "+latitude+"    longitude:"+longitude+"    radius:"+radius+"     coorType:"+coorType+"     errorCode:"+errorCode);
-            HttpUtils.getInstance().geData().addPos(2,Double.toString(latitude),Double.toString(longitude)).subscribeOn(Schedulers.io())
+            /*HttpUtils.getInstance().geData().addPos(2,Double.toString(latitude),Double.toString(longitude)).subscribeOn(Schedulers.io())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<Success>() {
@@ -218,7 +224,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding>{
 
                         @Override
                         public void onError(Throwable e) {
-                            Log.d(WasteTreatmentApplication.TAG, "pos:"+ e.getMessage()+new BigDecimal(3.5));
+                            Log.d(TAG, "pos:"+ e.getMessage()+new BigDecimal(3.5));
 
                         }
 
@@ -227,7 +233,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding>{
 
                         }
                     });
-
+*/
         }
     }
 
@@ -235,23 +241,33 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding>{
     public void onPause() {
         super.onPause();
        //mapView.onPause();
-        Log.d(WasteTreatmentApplication.TAG, "FRAGMENT:onPause");
-    }
+        Log.d(TAG, "onPause: ");    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
        // mapView.onDestroy();
-        Log.d(WasteTreatmentApplication.TAG, "FRAGMENT:onDestroy");
+        Log.d(TAG, "onDestroy: ");
     }
 
     @Override
     public void onResume() {
         super.onResume();
       //  mapView.onResume();
-        Log.d(WasteTreatmentApplication.TAG, "FRAGMENT:onResume:");
+        Log.d(TAG, "onResume: ");
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d(TAG, "onDestroyView: ");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.d(TAG, "onDetach: ");
+    }
 
     private void showNormalDialog() {
         /* @setIcon 设置对话框图标
@@ -310,7 +326,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding>{
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         carId=getCarsBean.getContent().get(which).getOid();
-                                        Log.d(WasteTreatmentApplication.TAG, "onClick: "+carId);
+                                        Log.d(TAG, "onClick: "+carId);
 
                                     }
                                 });
@@ -368,7 +384,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding>{
                                     public void onClick(DialogInterface dialog, int which) {
                                         driveId=getCarsBean.getContent().get(which).getID();
 
-                                        Log.d(WasteTreatmentApplication.TAG, "onClick: "+carId);
+                                        Log.d(TAG, "onClick: "+carId);
 
                                     }
                                 });
@@ -398,7 +414,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding>{
 
     }
     private void beginRoute(){
-        Log.d(WasteTreatmentApplication.TAG, "carId: "+carId+"   driveId: "+driveId+"    userId: "+WasteTreatmentApplication.instance.userId);
+        Log.d(TAG, "carId: "+carId+"   driveId: "+driveId+"    userId: "+WasteTreatmentApplication.instance.userId);
         HttpUtils.getInstance().geData().beginRoute(Integer.toString(carId),Integer.toString(driveId),WasteTreatmentApplication.instance.userId)
                 .subscribeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())
@@ -410,7 +426,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding>{
 
                     @Override
                     public void onNext(BeginRouteBean beginRouteBean) {
-                        Log.d(WasteTreatmentApplication.TAG, "beginRouteBean: "+beginRouteBean.toString());
+                        Log.d(TAG, "beginRouteBean: "+beginRouteBean.toString());
                         if (beginRouteBean.getIsSuccess()){
                             Tips.show("已生成路线");
                         }
@@ -419,7 +435,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding>{
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d(WasteTreatmentApplication.TAG, "Throwable: "+e.toString());
+                        Log.d(TAG, "Throwable: "+e.toString());
 
 
                     }

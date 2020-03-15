@@ -56,7 +56,7 @@ public class Utils {
     public final static int DATE_MD=02;
     public final static int DATE_TIME=03;
     public final static int DATE_DATE=00;
-    AlertDialog
+//    AlertDialog
     /**
      *  读写权限  自己可以添加需要判断的权限
      */
@@ -326,7 +326,8 @@ public class Utils {
         return (int) ((Math.random() * 9 + 1) * 100000);
     }
     public static void getPermission( Activity context) {
-
+        boolean isDkai =true;
+        Log.d(WasteTreatmentApplication.TAG,"abc:"+isDkai);
         //添加这下面的一部分
         //动态申请权限
         List<String> permissionList = new ArrayList<>();
@@ -343,9 +344,12 @@ public class Utils {
             permissionList.add(Manifest.permission.CAMERA);
         }
         if (!permissionList.isEmpty()) {
+            Log.d(WasteTreatmentApplication.TAG,"XXX:"+isDkai);
+
             String[] permissions = permissionList.toArray(new String[permissionList.size()]);
             ActivityCompat.requestPermissions(context, permissions, 1);
         }
+
 
     }
 
