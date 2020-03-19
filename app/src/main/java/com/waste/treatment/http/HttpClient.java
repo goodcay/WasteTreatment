@@ -1,8 +1,6 @@
 package com.waste.treatment.http;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
 
 
 import java.io.File;
@@ -18,20 +16,20 @@ import retrofit2.converter.fastjson.FastJsonConverterFactory;
  * Created by Cay on 2017/1/20.
  */
 
-public class HttpUtils {
+public class HttpClient {
     private Context context;
-    private static HttpUtils sHttpUtils;
-    private RetrofitHttpClient mWTClient;
-    private RetrofitHttpClient mMyObservableClient;
+    private static HttpClient sHttpUtils;
+    private Api mWTClient;
+    private Api mMyObservableClient;
     private OkHttpClient okHttpClient;
-    private RetrofitHttpClient mJuHelient;
+    private Api mJuHelient;
 
 
     private static final String baseUrl="http://192.168.121.59/";
     private static final String juheUrl = "http://v.juhe.cn/";
-    public static HttpUtils getInstance() {
+    public static HttpClient getInstance() {
         if (sHttpUtils == null) {
-            sHttpUtils = new HttpUtils();
+            sHttpUtils = new HttpClient();
         }
         return sHttpUtils;
     }
@@ -55,44 +53,42 @@ public class HttpUtils {
         return okHttpClient;
     }
 
-    public RetrofitHttpClient geData() {
+    public Api geData() {
 
             mWTClient = new Retrofit.Builder().baseUrl(baseUrl)
                     .addConverterFactory(FastJsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .client(getOkHttpClient()).build().create(RetrofitHttpClient.class);
+                    .client(getOkHttpClient()).build().create(Api.class);
 
 
         return mWTClient;
     }
-    public RetrofitHttpClient geData1() {
+    public Api geData1() {
 
-        mWTClient = new Retrofit.Builder().baseUrl("http://127.0.0.1/")
+        mWTClient = new Retrofit.Builder().baseUrl("http://192.168.1.59:8000/")
                 .addConverterFactory(FastJsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(getOkHttpClient()).build().create(RetrofitHttpClient.class);
-
-
+                .client(getOkHttpClient()).build().create(Api.class);
         return mWTClient;
     }
 
-    public RetrofitHttpClient getDouBan() {
+    public Api getDouBan() {
         if (mMyObservableClient == null) {
             mMyObservableClient = new Retrofit.Builder().baseUrl("https://api.douban.com/")
                     .addConverterFactory(FastJsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .client(getOkHttpClient()).build().create(RetrofitHttpClient.class);
+                    .client(getOkHttpClient()).build().create(Api.class);
         }
         return mMyObservableClient;
     }
 
-    public RetrofitHttpClient getmJuHeClient(){
+    public Api getmJuHeClient(){
         mJuHelient = new Retrofit.Builder().baseUrl(juheUrl)
                 .addConverterFactory(FastJsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(getOkHttpClient())
                 .build()
-                .create(RetrofitHttpClient.class);
+                .create(Api.class);
         return  mJuHelient;
 
     }

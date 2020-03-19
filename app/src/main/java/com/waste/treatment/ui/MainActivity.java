@@ -7,12 +7,14 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
 import com.waste.treatment.R;
+import com.waste.treatment.WasteTreatmentApplication;
 import com.waste.treatment.adapter.FragmentIndexAdapter;
 
 import com.waste.treatment.databinding.ActivityTestFramgeBinding;
@@ -34,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(WasteTreatmentApplication.TAG, "MainActivity:onCreate: ");
+
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         Utils.makeStatusBarTransparent(this);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_test_framge);
@@ -132,17 +136,35 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d(WasteTreatmentApplication.TAG, "MainActivity:onResume: ");
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        Log.d(WasteTreatmentApplication.TAG, "MainActivity:onPause: ");
 
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        Log.d(WasteTreatmentApplication.TAG, "MainActivity:onStop: ");
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(WasteTreatmentApplication.TAG, "MainActivity:onDestroy: ");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(WasteTreatmentApplication.TAG, "MainActivity:onStart: ");
 
     }
 }
+

@@ -26,7 +26,7 @@ public class TestListViewAdapter extends BaseQuickAdapter<String , BaseViewHolde
     @Override
     protected void convert(BaseViewHolder baseViewHolder, String s) {
         final String b=s;
-        TextView a =baseViewHolder.getView(R.id.text_tiaoma);
+       // TextView a =baseViewHolder.getView(R.id.text_tiaoma);
        /* a.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {

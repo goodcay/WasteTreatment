@@ -24,7 +24,7 @@ import com.waste.treatment.WasteTreatmentApplication;
 import com.waste.treatment.bean.GetCarsBean;
 import com.waste.treatment.bean.GetTypesBean;
 import com.waste.treatment.databinding.ActivityCollectBinding;
-import com.waste.treatment.http.HttpUtils;
+import com.waste.treatment.http.HttpClient;
 import com.waste.treatment.util.Tips;
 import com.waste.treatment.util.Utils;
 import com.wildma.pictureselector.PictureSelector;
@@ -191,7 +191,7 @@ public class CollectActivity extends AppCompatActivity implements CompoundButton
     int yourChoice;
 
     private void showSingleChoiceDialog() {
-        HttpUtils.getInstance().geData().getCars().subscribeOn(Schedulers.io())
+        HttpClient.getInstance().geData().getCars().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<GetCarsBean>() {
                     @Override
@@ -274,7 +274,7 @@ public class CollectActivity extends AppCompatActivity implements CompoundButton
 
     private List<String> getTypes (){
         final List<String> typeList = new ArrayList<>();
-        HttpUtils.getInstance().geData().getTypes()
+        HttpClient.getInstance().geData().getTypes()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<GetTypesBean>() {

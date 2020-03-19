@@ -9,9 +9,7 @@ import com.waste.treatment.R;
 import com.waste.treatment.WasteTreatmentApplication;
 import com.waste.treatment.bean.CarsContent;
 import com.waste.treatment.bean.GetCarsBean;
-import com.waste.treatment.bean.newsBean;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -32,7 +30,7 @@ public class RxJavaTestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_rx_java_test);
        // testJuhePost();
 
-        HttpUtils.getInstance().geData().getCars().map(new Function<GetCarsBean, List<CarsContent>>() {
+        HttpClient.getInstance().geData().getCars().map(new Function<GetCarsBean, List<CarsContent>>() {
 
             @Override
             public List<CarsContent> apply(GetCarsBean getCarsBean) throws Exception {

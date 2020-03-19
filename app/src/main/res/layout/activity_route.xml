@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/ll_bangding"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/title_bar_high"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bg_edit"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="18dp"
+                    android:layout_marginStart="14.5dp"
+                    android:text="@string/driver"
+                    android:textSize="16sp" />
+
+                <Spinner
+                    android:id="@+id/sp_sj"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="14sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/title_bar_high"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bg_edit"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="18dp"
+                    android:layout_marginStart="14.5dp"
+                    android:text="@string/chepai"
+                    android:textSize="16sp" />
+
+                <Spinner
+                    android:id="@+id/sp_chepai"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="14sp" />
+            </LinearLayout>
+            <Button
+                android:id="@+id/btn_sc"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/title_bar_high"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/login_btn"
+                android:text="@string/sclx"
+                android:textColor="@color/color_white"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="@dimen/dp_10"
+            android:id="@+id/ll_wc"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="你已生成路线！"
+                android:textSize="20dp"/>
+
+            <Button
+                android:id="@+id/end_route"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/title_bar_high"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/login_btn"
+                android:text="结束路线"
+                android:textColor="@color/color_white"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

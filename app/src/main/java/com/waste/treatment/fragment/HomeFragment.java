@@ -30,8 +30,8 @@ import com.waste.treatment.bean.GetCarsBean;
 import com.waste.treatment.bean.GetDriverBean;
 import com.waste.treatment.bean.Success;
 import com.waste.treatment.databinding.FragmentHomeBinding;
-import com.waste.treatment.http.HttpUtils;
-import com.waste.treatment.ui.CollectActivity;
+import com.waste.treatment.http.HttpClient;
+import com.waste.treatment.ui.CollectActivity1;
 import com.waste.treatment.ui.RuiKuActivity;
 import com.waste.treatment.ui.ScanActivity;
 import com.waste.treatment.util.Tips;
@@ -47,30 +47,31 @@ import io.reactivex.schedulers.Schedulers;
 
 import static com.waste.treatment.WasteTreatmentApplication.TAG;
 
-public class HomeFragment extends BaseFragment<FragmentHomeBinding>{
+public class HomeFragment extends BaseFragment<FragmentHomeBinding> {
     private LocationClient mLocationClient;
     private MapView mapView;
-    private boolean isGps =false;
-    private int carId =0;
-    private int driveId =0;
+    private int carId = 0;
+    private int driveId = 0;
+    private boolean firstLocation = false;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        Log.d(TAG, "onAttach: ");
+        Log.d(TAG, "HomeFragment:onAttach: ");
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate: ");
+        Log.d(TAG, "HomeFragment:onCreate: ");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView: ");
+        Log.d(TAG, "HomeFragment:onCreateView: ");
         return super.onCreateView(inflater, container, savedInstanceState);
     }
+
     @Override
     public int setContent() {
         Log.d(TAG, "setContent: ");
@@ -91,12 +92,12 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding>{
 
         bindingView.ilTitle.tvTitle.setText(getResources().getString(R.string.home));
         bindingView.ilTitle.tvRightText.setText(Utils.getDate(Utils.DATE_YMD));
-     //   bindingView.ilTitle.tvLeftText.setText(WasteTreatmentApplication.instance.userName);
+        bindingView.ilTitle.tvLeftText.setText(WasteTreatmentApplication.instance.getUserName());
 
         bindingView.llYfsj.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), CollectActivity.class));
+                startActivity(new Intent(getActivity(), CollectActivity1.class));
             }
         });
 
@@ -112,22 +113,23 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding>{
                 startActivity(new Intent(getActivity(), ScanActivity.class));
             }
         });
-       // showContentView();
+        bindingView.llYfys.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //startActivity(new Intent(getActivity(), CollectActivity1.class));
+            }
+        });
+        // showContentView();
 
 
-            initLocation();
-            initBaiDuMap();
-       // showNormalDialog();
+        initLocation();
+        initBaiDuMap();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        Log.d(TAG, "onStart: ");
-
-
-
-
+        Log.d(TAG, "HomeFragment:onStart: ");
 
 
     }
@@ -173,9 +175,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding>{
         mapView.getMap().setMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
 
 
-
     }
-
 
 
     public class MyLocationListener extends BDAbstractLocationListener {
@@ -192,8 +192,11 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding>{
                     .direction(location.getDirection()).latitude(location.getLatitude())
                     .longitude(location.getLongitude()).build();
             mapView.getMap().setMyLocationData(locData);
-            showContentView();
-
+            if (!firstLocation) {
+                firstLocation = true;
+                showContentView();
+                showNormalDialog();
+            }
 
 
             //获取纬度信息
@@ -206,67 +209,72 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding>{
             String coorType = location.getCoorType();
             //获取定位类型、定位错误返回码，具体信息可参照类参考中BDLocation类中的说明
             int errorCode = location.getLocType();
-           // Log.d(WasteTreatmentApplication.TAG, "latitude: "+latitude+"    longitude:"+longitude+"    radius:"+radius+"     coorType:"+coorType+"     errorCode:"+errorCode);
-            /*HttpUtils.getInstance().geData().addPos(2,Double.toString(latitude),Double.toString(longitude)).subscribeOn(Schedulers.io())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<Success>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
 
-                        }
+            if (WasteTreatmentApplication.instance.getRouteId() != null) {
+                Log.d(WasteTreatmentApplication.TAG, "latitude: " + latitude + "    longitude:" + longitude + "    radius:" + radius + "     coorType:" + coorType + "     errorCode:" + errorCode);
+                HttpClient.getInstance().geData().addPos(WasteTreatmentApplication.instance.getRouteId(), Double.toString(latitude), Double.toString(longitude)).subscribeOn(Schedulers.io())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<Success>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
 
-                        @Override
-                        public void onNext(Success success) {
-                          //  Log.d(WasteTreatmentApplication.TAG, "onNextppos" + success.toString()+success.getIsSuccess());
+                            }
 
-                        }
+                            @Override
+                            public void onNext(Success success) {
+                                Log.d(WasteTreatmentApplication.TAG, "经纬度上传：" + success.getIsSuccess());
 
-                        @Override
-                        public void onError(Throwable e) {
-                            Log.d(TAG, "pos:"+ e.getMessage()+new BigDecimal(3.5));
+                            }
 
-                        }
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.d(TAG, "pos:" + e.getMessage() + new BigDecimal(3.5));
 
-                        @Override
-                        public void onComplete() {
+                            }
 
-                        }
-                    });
-*/
+                            @Override
+                            public void onComplete() {
+
+                            }
+                        });
+
+            }
+
         }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-       //mapView.onPause();
-        Log.d(TAG, "onPause: ");    }
+        //mapView.onPause();
+        Log.d(TAG, "HomeFragment:onPause: ");
+    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-       // mapView.onDestroy();
-        Log.d(TAG, "onDestroy: ");
+        // mapView.onDestroy();
+        Log.d(TAG, "HomeFragment:onDestroy: ");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-      //  mapView.onResume();
-        Log.d(TAG, "onResume: ");
+        //  mapView.onResume();
+        Log.d(TAG, "HomeFragment:onResume: ");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.d(TAG, "onDestroyView: ");
+        Log.d(TAG, "HomeFragment:onDestroyView: ");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        Log.d(TAG, "onDetach: ");
+        Log.d(TAG, "HomeFragment:onDetach: ");
     }
 
     private void showNormalDialog() {
@@ -299,8 +307,9 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding>{
         // 显示
         normalDialog.show();
     }
+
     private void showCarIdDialog() {
-        HttpUtils.getInstance().geData().getCars()
+        HttpClient.getInstance().geData().getCars()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<GetCarsBean>() {
@@ -312,10 +321,10 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding>{
                     @Override
                     public void onNext(final GetCarsBean getCarsBean) {
                         final String[] items = new String[getCarsBean.getContent().size()];
-                        carId=getCarsBean.getContent().get(0).getOid();
+                        carId = getCarsBean.getContent().get(0).getOid();
 
-                        for (int i=0 ;i<getCarsBean.getContent().size();i++){
-                            items[i]=getCarsBean.getContent().get(i).getName();
+                        for (int i = 0; i < getCarsBean.getContent().size(); i++) {
+                            items[i] = getCarsBean.getContent().get(i).getName();
                         }
                         AlertDialog.Builder singleChoiceDialog =
                                 new AlertDialog.Builder(getActivity());
@@ -325,8 +334,8 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding>{
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        carId=getCarsBean.getContent().get(which).getOid();
-                                        Log.d(TAG, "onClick: "+carId);
+                                        carId = getCarsBean.getContent().get(which).getOid();
+                                        Log.d(TAG, "onClick: " + carId);
 
                                     }
                                 });
@@ -353,11 +362,10 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding>{
                 });
 
 
-
     }
 
     private void showDriveDialog() {
-        HttpUtils.getInstance().geData().getDriver()
+        HttpClient.getInstance().geData().getDriver()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<GetDriverBean>() {
@@ -370,10 +378,10 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding>{
                     public void onNext(final GetDriverBean getCarsBean) {
                         final String[] items = new String[getCarsBean.getContent().size()];
 
-                        for (int i=0 ;i<getCarsBean.getContent().size();i++){
-                            items[i]=getCarsBean.getContent().get(i).getChineseName();
+                        for (int i = 0; i < getCarsBean.getContent().size(); i++) {
+                            items[i] = getCarsBean.getContent().get(i).getChineseName();
                         }
-                        driveId=getCarsBean.getContent().get(0).getID();
+                        driveId = getCarsBean.getContent().get(0).getID();
                         AlertDialog.Builder singleChoiceDialog =
                                 new AlertDialog.Builder(getActivity());
                         singleChoiceDialog.setTitle("请选择司机");
@@ -382,9 +390,9 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding>{
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        driveId=getCarsBean.getContent().get(which).getID();
+                                        driveId = getCarsBean.getContent().get(which).getID();
 
-                                        Log.d(TAG, "onClick: "+carId);
+                                        Log.d(TAG, "onClick: " + carId);
 
                                     }
                                 });
@@ -411,13 +419,13 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding>{
                 });
 
 
-
     }
-    private void beginRoute(){
-        Log.d(TAG, "carId: "+carId+"   driveId: "+driveId+"    userId: "+WasteTreatmentApplication.instance.userId);
-        HttpUtils.getInstance().geData().beginRoute(Integer.toString(carId),Integer.toString(driveId),WasteTreatmentApplication.instance.userId)
+
+    private void beginRoute() {
+        Log.d(TAG, "carId: " + carId + "   driveId: " + driveId + "    userId: " + WasteTreatmentApplication.instance.getUserId());
+        HttpClient.getInstance().geData().beginRoute(Integer.toString(carId), Integer.toString(driveId), WasteTreatmentApplication.instance.getUserId())
                 .subscribeOn(Schedulers.io())
-                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BeginRouteBean>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -426,16 +434,19 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding>{
 
                     @Override
                     public void onNext(BeginRouteBean beginRouteBean) {
-                        Log.d(TAG, "beginRouteBean: "+beginRouteBean.toString());
-                        if (beginRouteBean.getIsSuccess()){
+                        if (beginRouteBean.getIsSuccess()) {
+                            WasteTreatmentApplication.getInstance().setRouteId(Integer.toString(beginRouteBean.getContent().getOid()));
                             Tips.show("已生成路线");
+                        } else {
+                            Tips.show(beginRouteBean.getErrorMsg());
+
                         }
 
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d(TAG, "Throwable: "+e.toString());
+                        Log.d(TAG, "Throwable: " + e.toString());
 
 
                     }
@@ -445,7 +456,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding>{
 
                     }
                 });
-
     }
 
 }

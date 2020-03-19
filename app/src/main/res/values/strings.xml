@@ -13,9 +13,10 @@
     <!--医废收集-->
 
     <string name="home_page">首页</string>
-    <string name="zhonglei">种类:</string>
-    <string name="keshi">科室:</string>
-    <string name="zhongliang">重量:</string>
+    <string name="zhonglei">种类：</string>
+    <string name="gongsi">公司：</string>
+    <string name="chepai">车牌：</string>
+    <string name="zhongliang">重量：</string>
     <string name="collect_title">医废收集</string>
     <string name="login_up_text">上传</string>
     <string name="quanxuan">全选</string>
@@ -40,6 +41,7 @@
 
     <!--设置-->
     <string name="kefu">联系客服</string>
+    <string name="sclx">路线设置</string>
     <string name="tel">028-87393250</string>
     <string name="login_out">退出登录</string>
     <string name="xingming">姓名</string>
@@ -56,5 +58,11 @@
     <string name="save">保存</string>
     <string name="print_error">打印机故障</string>
 
-
+    <string name="driver">司机：</string>
+    <string name="collect_people">收集人：</string>
+    <string name="fw_leixing">废物类型：</string>
+    <string name="fw_biaoshi">废物标识：</string>
+    <string name="yunshu_cars">运输车辆：</string>
+    <string name="shouji_time">收集时间：</string>
+    <string name="rukui_time">入库时间：</string>
 </resources>

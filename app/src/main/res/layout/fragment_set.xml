@@ -114,6 +114,38 @@
             android:layout_height="1dp"
             android:background="@color/color_text_line" />
         <LinearLayout
+            android:id="@+id/ll_sclx"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_bar_high"
+            android:background="@drawable/bg_edit"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/dp_25"
+                android:layout_height="@dimen/dp_25"
+                android:layout_marginStart="14.5dp"
+                android:src="@mipmap/luxian" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="@string/sclx"
+                android:gravity="center_vertical"
+                android:textSize="14sp" />
+            <ImageView
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:src="@mipmap/next"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_text_line" />
+        <LinearLayout
             android:id="@+id/ll_lixiankefu"
             android:layout_width="match_parent"
             android:layout_height="@dimen/title_bar_high"
@@ -148,7 +180,7 @@
             android:background="@color/color_text_line" />
 
         <Button
-            android:id="@+id/login_btn"
+            android:id="@+id/logout_btn"
             android:layout_width="match_parent"
             android:layout_height="@dimen/title_bar_high"
             android:layout_marginStart="15dp"

@@ -1,17 +1,13 @@
 package com.waste.treatment.ui;
 
-import androidx.annotation.LongDef;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
-import android.Manifest;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -22,27 +18,21 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.waste.treatment.R;
 import com.waste.treatment.WasteTreatmentApplication;
-import com.waste.treatment.bean.GetCarsBean;
 import com.waste.treatment.bean.GetUsersBean;
 import com.waste.treatment.bean.Success;
 import com.waste.treatment.databinding.ActivityLoginBinding;
-import com.waste.treatment.http.HttpUtils;
+import com.waste.treatment.http.HttpClient;
 import com.waste.treatment.util.DialogUtil;
 import com.waste.treatment.util.Tips;
 import com.waste.treatment.util.Utils;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import me.weyye.hipermission.HiPermission;
-import me.weyye.hipermission.PermissionCallback;
 
 public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding mBinding;
@@ -55,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         Utils.makeStatusBarTransparent(this);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         mBinding.ilTitle.tvTitle.setText(getResources().getString(R.string.login_btn_text));
-        waitingDialog = DialogUtil.showWaitingDialog(LoginActivity.this, "正在登陆···");
+        waitingDialog = DialogUtil.waitingDialog(LoginActivity.this, "正在登陆···");
         mBinding.loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,7 +57,42 @@ public class LoginActivity extends AppCompatActivity {
                     if (Utils.lacksPermissions(LoginActivity.this, Utils.permissionsREAD)) {
                         ActivityCompat.requestPermissions(LoginActivity.this, Utils.permissionsREAD, 0);
                     } else {
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        waitingDialog.show();
+                        HttpClient.getInstance().geData().loginIn(mBinding.loginNameEdt.getText().toString().trim(),mBinding.loginPwdEdt.getText().toString().trim())
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Observer<Success>() {
+                                    @Override
+                                    public void onSubscribe(Disposable d) {
+
+                                    }
+
+                                    @Override
+                                    public void onNext(Success success) {
+                                        Log.d(WasteTreatmentApplication.TAG, "success: "+success.toString());
+                                        if (success.getIsSuccess()){
+                                            getUser(mBinding.loginNameEdt.getText().toString().trim());
+                                            //startActivity(new Intent(LoginActivity.this, MainActivity.class));
+
+                                        }else {
+                                            mBinding.errorLl.setVisibility(View.VISIBLE);
+                                            waitingDialog.cancel();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e) {
+                                        waitingDialog.cancel();
+                                        Tips.show("登录异常");
+                                    }
+
+                                    @Override
+                                    public void onComplete() {
+
+                                    }
+                                });
+
+
 
                     }
 
@@ -169,7 +194,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void getUser(String operatorId) {
 
-        HttpUtils.getInstance().geData().getUser(operatorId).subscribeOn(Schedulers.io())
+        HttpClient.getInstance().geData().getUser(operatorId).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<GetUsersBean>() {
                     @Override

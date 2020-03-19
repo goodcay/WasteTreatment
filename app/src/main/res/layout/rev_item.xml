@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="5dp"
     android:layout_marginStart="5dp"
     android:layout_marginTop="5dp"
+    android:layout_marginEnd="5dp"
     android:background="@drawable/rv_background_item"
     android:orientation="vertical">
 
@@ -17,25 +17,18 @@
         android:paddingEnd="@dimen/dp_5">
 
         <TextView
+            android:id="@+id/tv_gongsi"
             android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="动物实验"
+            android:text="四川大学华西研究所"
             android:textColor="@color/color_white"
             android:textSize="16sp" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_gravity=""
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="感染性"
-            android:textColor="@color/color_white"
-            android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/tv_zhongliang"
             android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_weight="1"
@@ -54,18 +47,17 @@
         android:paddingEnd="@dimen/dp_5">
 
         <TextView
-            android:id="@+id/text_tiaoma"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="废物名称："
+            android:text="@string/fw_leixing"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/text_tiaoma1"
+            android:id="@+id/tv_leixing"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="兔子、青蛙、老鼠"
             android:textColor="@color/color_black"
-            android:text="实验标本废物"
             android:textSize="16sp" />
     </LinearLayout>
 
@@ -80,7 +72,7 @@
             android:id="@+id/text_tiaoma12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="条码标识："
+            android:text="@string/fw_biaoshi"
             android:textSize="16sp" />
 
         <TextView
@@ -100,10 +92,9 @@
         android:paddingEnd="@dimen/dp_5">
 
         <TextView
-            android:id="@+id/text_tiaoma3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="运输车辆："
+            android:text="@string/yunshu_cars"
             android:textSize="16sp" />
 
         <TextView
@@ -123,18 +114,17 @@
         android:paddingEnd="@dimen/dp_5">
 
         <TextView
-            android:id="@+id/text_tiaoma35"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="收集时间："
+            android:text="@string/shouji_time"
             android:textSize="16sp" />
 
         <TextView
             android:id="@+id/text_tiaoma135"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/color_black"
             android:text="2020-02-05 13：21：59"
+            android:textColor="@color/color_black"
             android:textSize="16sp" />
     </LinearLayout>
 
@@ -146,18 +136,17 @@
         android:paddingEnd="@dimen/dp_5">
 
         <TextView
-            android:id="@+id/text_tiaoma355"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="入库时间："
+            android:text="@string/rukui_time"
             android:textSize="16sp" />
 
         <TextView
             android:id="@+id/text_tiaoma1355"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/color_black"
             android:text="2020-02-05 16：35：21"
+            android:textColor="@color/color_black"
             android:textSize="16sp" />
     </LinearLayout>
 
@@ -168,19 +157,36 @@
         android:paddingEnd="@dimen/dp_5">
 
         <TextView
-            android:id="@+id/text_tiaoma355d"
-            android:layout_toLeftOf="@+id/text_tiaoma13555"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="收集人："
+            android:layout_toStartOf="@+id/tv_siji"
+            android:text="@string/driver"
             android:textSize="16sp" />
 
         <TextView
-            android:layout_marginEnd="@dimen/dp_50"
-            android:layout_alignParentEnd="true"
-            android:id="@+id/text_tiaoma13555"
+            android:id="@+id/tv_siji"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_toStartOf="@+id/tv_sjr"
+            android:text="张三"
+            android:textColor="@color/color_black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_sjr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/tv_shoujiren"
+            android:text="@string/collect_people"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_shoujiren"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="25dp"
             android:text="李四"
             android:textColor="@color/color_black"
             android:textSize="16sp" />
