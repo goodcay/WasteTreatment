@@ -1,6 +1,7 @@
 package com.waste.treatment.util;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -36,11 +37,15 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.logging.Logger;
 
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
@@ -49,23 +54,25 @@ import static android.util.TypedValue.COMPLEX_UNIT_MM;
 import static android.util.TypedValue.COMPLEX_UNIT_PT;
 import static android.util.TypedValue.COMPLEX_UNIT_PX;
 import static android.util.TypedValue.COMPLEX_UNIT_SP;
+import static com.waste.treatment.WasteTreatmentApplication.TAG;
 
 public class Utils {
     private static Context context;
-    public final static int DATE_YMD=01;
-    public final static int DATE_MD=02;
-    public final static int DATE_TIME=03;
-    public final static int DATE_DATE=00;
+    public final static int DATE_YMD = 01;
+    public final static int DATE_MD = 02;
+    public final static int DATE_TIME = 03;
+    public final static int DATE_DATE = 00;
 //    AlertDialog
     /**
-     *  读写权限  自己可以添加需要判断的权限
+     * 读写权限  自己可以添加需要判断的权限
      */
-    public static String[] permissionsREAD={
+    public static String[] permissionsREAD = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA,
             Manifest.permission.ACCESS_FINE_LOCATION
-};
+    };
+
     /**
      * 初始化工具类
      *
@@ -226,17 +233,17 @@ public class Utils {
         int minute = calendar.get(Calendar.MINUTE);
         //秒
         int second = calendar.get(Calendar.SECOND);
-        switch (type){
+        switch (type) {
             case DATE_MD:
                 return month + "月" + day + "日";
             case DATE_YMD:
-                return year+"年"+month + "月" + day + "日";
+                return year + "年" + month + "月" + day + "日";
             case DATE_TIME:
-                return hour+":"+minute+":"+second;
+                return hour + ":" + minute + ":" + second;
             case DATE_DATE:
-                return year+"-"+month+"-"+day+" "+ hour+":"+minute+":"+second;
+                return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
             default:
-                return year+month+day+hour+minute+second+"";
+                return year + month + day + hour + minute + second + "";
 
         }
 
@@ -261,28 +268,29 @@ public class Utils {
         }
         return 0;
     }
+
     /**
      * 将图片转换成Base64编码的字符串
      */
-    public static String imageToBase64(String path){
-        if(TextUtils.isEmpty(path)){
+    public static String imageToBase64(String path) {
+        if (TextUtils.isEmpty(path)) {
             return null;
         }
         InputStream is = null;
         byte[] data = null;
         String result = null;
-        try{
+        try {
             is = new FileInputStream(path);
             //创建一个字符流大小的数组。
             data = new byte[is.available()];
             //写入数组
             is.read(data);
             //用默认的编码格式进行编码
-            result = Base64.encodeToString(data,Base64.NO_WRAP);
-        }catch (Exception e){
+            result = Base64.encodeToString(data, Base64.NO_WRAP);
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
-            if(null !=is){
+        } finally {
+            if (null != is) {
                 try {
                     is.close();
                 } catch (IOException e) {
@@ -293,16 +301,18 @@ public class Utils {
         }
         return result;
     }
+
     /**
      * 将Base64编码转换为图片
+     *
      * @param base64Str
      * @param path
      * @return true
      */
-    public static boolean base64ToFile(String base64Str,String path) {
-        byte[] data = Base64.decode(base64Str,Base64.NO_WRAP);
+    public static boolean base64ToFile(String base64Str, String path) {
+        byte[] data = Base64.decode(base64Str, Base64.NO_WRAP);
         for (int i = 0; i < data.length; i++) {
-            if(data[i] < 0){
+            if (data[i] < 0) {
                 //调整异常数据
                 data[i] += 256;
             }
@@ -317,17 +327,19 @@ public class Utils {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return false;
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
     }
-    public  static int  getSixNumber(){
+
+    public static int getSixNumber() {
         return (int) ((Math.random() * 9 + 1) * 100000);
     }
-    public static void getPermission( Activity context) {
-        boolean isDkai =true;
-        Log.d(WasteTreatmentApplication.TAG,"abc:"+isDkai);
+
+    public static void getPermission(Activity context) {
+        boolean isDkai = true;
+        Log.d(TAG, "abc:" + isDkai);
         //添加这下面的一部分
         //动态申请权限
         List<String> permissionList = new ArrayList<>();
@@ -344,7 +356,7 @@ public class Utils {
             permissionList.add(Manifest.permission.CAMERA);
         }
         if (!permissionList.isEmpty()) {
-            Log.d(WasteTreatmentApplication.TAG,"XXX:"+isDkai);
+            Log.d(TAG, "XXX:" + isDkai);
 
             String[] permissions = permissionList.toArray(new String[permissionList.size()]);
             ActivityCompat.requestPermissions(context, permissions, 1);
@@ -358,7 +370,7 @@ public class Utils {
      * permissions 权限数组
      * return true-表示没有改权限  false-表示权限已开启
      */
-    public static boolean lacksPermissions(Context mContexts,String[] permissions) {
+    public static boolean lacksPermissions(Context mContexts, String[] permissions) {
         for (String permission : permissions) {
             if (lacksPermission(mContexts, permission)) {
                 return true;
@@ -367,12 +379,65 @@ public class Utils {
         return false;
 
     }
+
     /**
      * 判断是否缺少权限
      */
     private static boolean lacksPermission(Context mContexts, String permission) {
         return ContextCompat.checkSelfPermission(mContexts, permission) ==
                 PackageManager.PERMISSION_DENIED;
+    }
+
+    public static String timeToTime(String s) {
+
+        @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSXXX");
+        Date date = null;
+        Date date1 = null;
+        try {
+            date = df.parse(s);
+        } catch (Exception e) {
+            Log.d(TAG, "timeToTime: " + e.toString());
+        }
+        SimpleDateFormat df1 = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy", Locale.UK);
+        try {
+            date1 = df1.parse(date.toString());
+            Log.d(TAG, "date1: " + date1);
+
+        } catch (Exception e) {
+            Log.d(TAG, "timeToTime1: " + e.toString());
+        }
+        @SuppressLint("SimpleDateFormat") DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        assert date1 != null;
+        return df2.format(date1);
+
+
+       /* DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ");
+        DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        df2.setTimeZone(TimeZone.getTimeZone("GMT"));
+        Date date = null;
+        try {
+            date = df.parse(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return  df2.format(date);*/
+
+    }
+
+    public static String timeToTime1(String s) {
+
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS");
+        DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        df2.setTimeZone(TimeZone.getTimeZone("GMT"));
+        Date date = null;
+        try {
+            date = df.parse(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return  df2.format(date);
+
     }
 
 }

@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -43,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         Utils.makeStatusBarTransparent(this);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//竖屏
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         mBinding.ilTitle.tvTitle.setText(getResources().getString(R.string.login_btn_text));
         waitingDialog = DialogUtil.waitingDialog(LoginActivity.this, "正在登陆···");
@@ -82,6 +84,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                     @Override
                                     public void onError(Throwable e) {
+                                        Log.d(WasteTreatmentApplication.TAG, "onError: "+e.toString());
                                         waitingDialog.cancel();
                                         Tips.show("登录异常");
                                     }
@@ -91,54 +94,9 @@ public class LoginActivity extends AppCompatActivity {
 
                                     }
                                 });
-
-
-
+                        
                     }
 
-                   /* if ( Utils.getPermission(LoginActivity.this)){
-                        Log.d(WasteTreatmentApplication.TAG, "onClick:AAAA ");
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    }else {
-                        Utils.getPermission(LoginActivity.this);
-                        Log.d(WasteTreatmentApplication.TAG, "onClick:CCC ");
-
-                    }*/
-                   /* startActivity(new Intent(LoginActivity.this, MainActivity.class));
-
-                   waitingDialog.show();
-*/
-                   /* HttpUtils.getInstance().geData().loginIn(mBinding.loginNameEdt.getText().toString().trim(),mBinding.loginPwdEdt.getText().toString().trim())
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Observer<Success>() {
-                                @Override
-                                public void onSubscribe(Disposable d) {
-
-                                }
-
-                                @Override
-                                public void onNext(Success success) {
-                                    Log.d(WasteTreatmentApplication.TAG, "success: "+success.toString());
-                                    if (success.getIsSuccess()){
-                                        getUser(mBinding.loginNameEdt.getText().toString().trim());
-                                    }else {
-                                        mBinding.errorLl.setVisibility(View.VISIBLE);
-                                       // waitingDialog.cancel();
-                                    }
-                                }
-
-                                @Override
-                                public void onError(Throwable e) {
-                                    waitingDialog.cancel();
-                                    Tips.show("登录异常");
-                                }
-
-                                @Override
-                                public void onComplete() {
-
-                                }
-                            });*/
 
                 }
             }
@@ -161,33 +119,6 @@ public class LoginActivity extends AppCompatActivity {
         });
         ActivityCompat.requestPermissions(LoginActivity.this, Utils.permissionsREAD, 0);
 
-       /* HiPermission.create(LoginActivity.this)
-                .animStyle(R.style.PermissionAnimFade)
-                .checkMutiPermission(new PermissionCallback() {
-                    @Override
-                    public void onClose() {
-                        Log.d(WasteTreatmentApplication.TAG, "onClose: ");
-
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        Log.d(WasteTreatmentApplication.TAG, "onFinish: ");
-
-                    }
-
-                    @Override
-                    public void onDeny(String permission, int position) {
-                        Log.d(WasteTreatmentApplication.TAG, "onDeny: ");
-
-                    }
-
-                    @Override
-                    public void onGuarantee(String permission, int position) {
-                        Log.d(WasteTreatmentApplication.TAG, "onGuarantee: ");
-
-                    }
-                });*/
 
     }
 

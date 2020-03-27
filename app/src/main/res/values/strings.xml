@@ -65,4 +65,11 @@
     <string name="yunshu_cars">运输车辆：</string>
     <string name="shouji_time">收集时间：</string>
     <string name="rukui_time">入库时间：</string>
+
+    <string name="yfsj">收集</string>
+    <string name="yfys">运输中</string>
+    <string name="yfrk">库存</string>
+    <string name="yfck">待销毁</string>
+    <string name="yfxf">已销毁</string>
+    <string name="yfcx">查询</string>
 </resources>

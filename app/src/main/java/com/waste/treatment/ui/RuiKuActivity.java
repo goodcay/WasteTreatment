@@ -1,67 +1,171 @@
 package com.waste.treatment.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.device.ScanDevice;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.CheckBox;
-import android.widget.Spinner;
-import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemChildClickListener;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
-import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.waste.treatment.R;
 import com.waste.treatment.WasteTreatmentApplication;
 import com.waste.treatment.adapter.RuiKuAdapter;
+import com.waste.treatment.bean.Data1Bean;
+import com.waste.treatment.bean.DataBean;
 import com.waste.treatment.bean.RuiKuBean;
-import com.waste.treatment.databinding.ActivityRuiKuBinding;
-import com.waste.treatment.dialog.RuiKuDialog;
+import com.waste.treatment.bean.Success;
+import com.waste.treatment.databinding.ActivityRuiKu1Binding;
+import com.waste.treatment.http.HttpClient;
 import com.waste.treatment.util.Tips;
-import com.waste.treatment.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RuiKuActivity extends AppCompatActivity implements RuiKuDialog.OnCenterItemClickListener {
-    private ActivityRuiKuBinding mBinding;
-    private RuiKuAdapter adapter;
-    public List<RuiKuBean> testData;
-    private RuiKuDialog mDialog;
-    private String abc;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
+public class RuiKuActivity extends BaseActivity<ActivityRuiKu1Binding> {
+    private RuiKuAdapter adapter;
+    public List<Data1Bean> data = new ArrayList<>();
+    private String type;
+    private String barcodeStr;
+    ScanDevice sm;
+    private int state;
+    private final static String SCAN_ACTION = "scan.rcv.message";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
-        Utils.makeStatusBarTransparent(this);
-        mDialog = new RuiKuDialog(this,R.layout.dialog_ruiku,new int []{R.id.dialog_queren,R.id.dialog_quxiao});
-        mDialog.setOnCenterItemClickListener(this);
-
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_rui_ku);
+        Bundle bundle = getIntent().getExtras();
+        type = bundle.getString("type");
+        state = bundle.getInt("state");
+        mParentBinding.ilTitle.tvTitle.setText(bundle.getString("titleName"));
+        mParentBinding.ilTitle.ivBack.setVisibility(View.VISIBLE);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mBinding.rvList.setLayoutManager(layoutManager);
-        mBinding.ilTitle.tvTitle.setText("入库废物");
-        mBinding.ilTitle.ivBack.setVisibility(View.VISIBLE);
-        mBinding.ilTitle.ivBack.setOnClickListener(new View.OnClickListener() {
+
+        adapter = new RuiKuAdapter(R.layout.rev_item, data, this);
+        mBinding.rvList.setAdapter(adapter);
+
+        sm = new ScanDevice();
+        sm.setOutScanMode(0);//启动就是广播模式
+        sm.openScan();
+        getData();
+
+
+        //  refreshTotal();
+/*        mBinding.allCb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                if (mBinding.allCb.isChecked()) {
+                    for (int i = 0; i < data.size(); i++) {
+                        data.get(i).setCheck(true);
+                    }
+                } else {
+                    for (int i = 0; i < data.size(); i++) {
+                        data.get(i).setCheck(false);
+                    }
+                }
+                refreshTotal();
+                adapter.notifyDataSetChanged();
+            }
+        });*/
+
+  /*      mBinding.btnRk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (int i = 0; i < testData.size(); i++) {
+                    testData.get(i).setCheck(true);
+                }
+            }
+        });*/
+        mBinding.btnRk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
-        adapter = new RuiKuAdapter(R.layout.item_ruiku, getData(), this);
-        adapter.setOnItemClickListener(new OnItemClickListener() {
+
+
+    }
+
+    @Override
+    protected int setLayout() {
+        return R.layout.activity_rui_ku1;
+    }
+
+    private void getData() {
+        HttpClient.getInstance().geData().getRecyles(type)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<DataBean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(DataBean dataBean) {
+                        Log.d(WasteTreatmentApplication.TAG, "data: " + dataBean.getContent());
+                        if (dataBean.getIsSuccess()) {
+                            data.clear();
+                            if (dataBean.getContent() != null) {
+                                data.addAll(dataBean.getContent());
+                            }
+                            adapter.notifyDataSetChanged();
+                            showContentView();
+                        } else {
+                            data.clear();
+                            if (dataBean.getContent() != null) {
+                                data.addAll(dataBean.getContent());
+                            }
+                            adapter.notifyDataSetChanged();
+                            showError();
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        showError();
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+    }
+
+/*
+    private void refreshTotal(){
+        int t =0;
+
+        for (int i=0;i<testData.size();i++){
+
+            if (testData.get(i).isCheck()){
+                t++;
+            }
+        }
+        mBinding.tvTotal.setText("合计："+t);
+
+    }
+*/
+   /*  private void adapterSet(){
+
+        adapter = new RuiKuAdapter(R.layout.rev_item, data, this);
+       adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Tips.show("item:"+position);
-
+               // Tips.show("item:"+position);
             }
         });
 
@@ -76,97 +180,160 @@ public class RuiKuActivity extends AppCompatActivity implements RuiKuDialog.OnCe
                         testData.get(position).setCheck(false);
                     }
                     refreshTotal();
-
                 }
-
-
             }
         });
         mBinding.rvList.setAdapter(adapter);
-        refreshTotal();
-        mBinding.allCb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mBinding.allCb.isChecked()) {
-                    for (int i = 0; i < testData.size(); i++) {
-                        testData.get(i).setCheck(true);
-                    }
-                } else {
-                    for (int i = 0; i < testData.size(); i++) {
-                        testData.get(i).setCheck(false);
-                    }
-                }
-                refreshTotal();
-                adapter.notifyDataSetChanged();
-            }
-        });
+    }*/
 
-        mBinding.btnRk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (int i = 0; i < testData.size(); i++) {
-                    testData.get(i).setCheck(true);
-                }
-            }
-        });
-        mBinding.btnRk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDialog.show();
-
-            }
-        });
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(SCAN_ACTION);
+        registerReceiver(mScanReceiver, filter);
     }
 
-    private List<RuiKuBean> getData() {
-        testData = new ArrayList<RuiKuBean>();
+    private BroadcastReceiver mScanReceiver = new BroadcastReceiver() {
 
-        for (int i = 0; i < 30; i++) {
-            RuiKuBean bean = new RuiKuBean();
+        @Override
+        public void onReceive(Context context, Intent intent) {
 
-            if (i % 2 == 1) {
-                bean.setCheck(false);
-
-
-            } else {
-                bean.setCheck(true);
-            }
-            bean.setAbc("a:" + i);
-            testData.add(bean);
+            byte[] barocode = intent.getByteArrayExtra("barocode");
+            int barocodelen = intent.getIntExtra("length", 0);
+            byte temp = intent.getByteExtra("barcodeType", (byte) 0);
+            byte[] aimid = intent.getByteArrayExtra("aimid");
+            barcodeStr = new String(barocode, 0, barocodelen);
+            update(state, barcodeStr, "1", WasteTreatmentApplication.instance.getUserId());
+            sm.stopScan();
         }
-        return testData;
+    };
 
-    }
-
-    private void refreshTotal(){
-        int t =0;
-
-        for (int i=0;i<testData.size();i++){
-
-            if (testData.get(i).isCheck()){
-                t++;
-            }
-        }
-        mBinding.tvTotal.setText("合计："+t);
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(mScanReceiver);
 
     }
 
     @Override
-    public void OnCenterItemClick(RuiKuDialog dialog, View view) {
-        switch (view.getId()){
-            case R.id.dialog_queren:
-                TextView tv = (TextView)dialog.findViewById(R.id.text_total);
-                Tips.show(tv.getText().toString());
+    protected void onDestroy() {
+        super.onDestroy();
+        if (sm != null) {
+            sm.stopScan();
+            sm.setScanLaserMode(8);
+            sm.closeScan();
+        }
+    }
+
+    @Override
+    protected void onRefresh() {
+        getData();
+    }
+
+    private void update(int i, String recyleCode, String amount, String operatorid) {
+
+        Log.i(WasteTreatmentApplication.TAG, "入库: int" + i + "  recyleCode:" + recyleCode + "  amount:" + amount + "    operatorid:" + operatorid);
+        switch (i) {
+            case 0:
+                HttpClient.getInstance().geData().isStock(recyleCode, amount, operatorid)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<Success>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
+
+                            }
+
+                            @Override
+                            public void onNext(Success success) {
+                                if (success.getIsSuccess()){
+                                    Tips.show("入库成功");
+                                }else {
+                                    Tips.show("入库失败");
+                                }
+
+                                onRefresh();
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.d(WasteTreatmentApplication.TAG, "onError: " + e.toString());
+                                Tips.show("入库失败");
+                            }
+
+                            @Override
+                            public void onComplete() {
+
+                            }
+                        });
                 break;
-            case R.id.dialog_quxiao:
+            case 1:
+                HttpClient.getInstance().geData().outStock(recyleCode, amount, operatorid)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<Success>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
+
+                            }
+
+                            @Override
+                            public void onNext(Success success) {
+                                if (success.getIsSuccess()){
+                                    Tips.show("出库成功");
+                                }else {
+                                    Tips.show("出库失败");
+                                }
+                                onRefresh();
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Tips.show("出库失败");
+
+                            }
+
+                            @Override
+                            public void onComplete() {
+
+                            }
+                        });
                 break;
-            case R.id.rui_spinner:
-                break;
-            default:
+            case 2:
+                HttpClient.getInstance().geData().invalidRecyle(recyleCode, operatorid)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<Success>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
+
+                            }
+
+                            @Override
+                            public void onNext(Success success) {
+                                if (success.getIsSuccess()){
+                                    Tips.show("销毁成功");
+                                }else {
+                                    Tips.show("销毁失败");
+                                }
+
+                                onRefresh();
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Tips.show("销毁失败");
+                            }
+
+                            @Override
+                            public void onComplete() {
+
+                            }
+                        });
                 break;
         }
 
     }
+
 }

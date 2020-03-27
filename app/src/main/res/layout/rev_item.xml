@@ -76,7 +76,7 @@
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/text_tiaoma123"
+            android:id="@+id/text_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="FW000202001060596"
@@ -98,7 +98,7 @@
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/text_tiaoma13"
+            android:id="@+id/text_chepai"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="1号运输车"
@@ -120,7 +120,7 @@
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/text_tiaoma135"
+            android:id="@+id/text_sj_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="2020-02-05 13：21：59"
@@ -128,7 +128,7 @@
             android:textSize="16sp" />
     </LinearLayout>
 
-    <LinearLayout
+    <!--<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_30"
         android:orientation="horizontal"
@@ -148,7 +148,7 @@
             android:text="2020-02-05 16：35：21"
             android:textColor="@color/color_black"
             android:textSize="16sp" />
-    </LinearLayout>
+    </LinearLayout>-->
 
     <RelativeLayout
         android:layout_width="match_parent"

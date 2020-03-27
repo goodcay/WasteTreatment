@@ -5,6 +5,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -36,10 +37,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(WasteTreatmentApplication.TAG, "MainActivity:onCreate: ");
-
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         Utils.makeStatusBarTransparent(this);
+        setRequestedOrientation(ActivityInfo .SCREEN_ORIENTATION_PORTRAIT);//竖屏
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_test_framge);
         initData();
         initEvent();

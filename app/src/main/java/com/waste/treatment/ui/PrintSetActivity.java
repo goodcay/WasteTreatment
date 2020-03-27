@@ -14,7 +14,6 @@ import com.waste.treatment.databinding.ActivityPrintSetBinding;
 import com.waste.treatment.util.SharedPreferencesUtil;
 import com.waste.treatment.util.Utils;
 
-import hardware.print.printer;
 
 
 public class PrintSetActivity extends AppCompatActivity {
@@ -65,11 +64,11 @@ public class PrintSetActivity extends AppCompatActivity {
         mBinding.printReviseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (printer.Open() == 0) {
+              /*  if (printer.Open() == 0) {
                     printer.Step((byte) 0x1f);
                 }else {
                     Toast.makeText(PrintSetActivity.this,getResources().getString(R.string.print_error),Toast.LENGTH_SHORT).show();
-                }
+                }*/
             }
         });
 
@@ -78,6 +77,6 @@ public class PrintSetActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        printer.Close();
+       // printer.Close();
     }
 }

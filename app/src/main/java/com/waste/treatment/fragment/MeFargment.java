@@ -43,6 +43,7 @@ public class MeFargment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
          mBinding.tvIdName.setText(WasteTreatmentApplication.instance.getUserName());
         mBinding.ilTitle.tvTitle.setText(getResources().getString(R.string.me));
         mBinding.llChangePwd.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +84,7 @@ public class MeFargment extends Fragment {
                             public void onNext(Success success) {
                                 Log.d(WasteTreatmentApplication.TAG, "onNext: "+success.getIsSuccess());
                                 if (success.getIsSuccess()){
-                                    WasteTreatmentApplication.instance.setRouteId(null);
+                                    WasteTreatmentApplication.instance.setRouteId(null,null,null);
                                     WasteTreatmentApplication.instance.setLoginMsg(null,null);
                                     startActivity(new Intent(getActivity(), LoginActivity.class));
                                     Objects.requireNonNull(getActivity()).finish();

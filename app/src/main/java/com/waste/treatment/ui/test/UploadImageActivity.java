@@ -12,6 +12,7 @@ import android.view.View;
 import com.bumptech.glide.Glide;
 import com.waste.treatment.R;
 import com.waste.treatment.WasteTreatmentApplication;
+import com.waste.treatment.bean.Success;
 import com.waste.treatment.databinding.ActivityUploadImageBinding;
 import com.waste.treatment.http.HttpClient;
 import com.wildma.pictureselector.PictureSelector;
@@ -71,21 +72,21 @@ public class UploadImageActivity extends AppCompatActivity {
         HttpClient.getInstance().geData1().uploadImage(parts)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<String>() {
+                .subscribe(new Observer<Success>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-                        Log.d(WasteTreatmentApplication.TAG, "onSubscribe: "+d.toString());
+                        Log.d(WasteTreatmentApplication.TAG, "UpImage  onSubscribe: "+d.toString());
 
                     }
 
                     @Override
-                    public void onNext(String s) {
-                        Log.d(WasteTreatmentApplication.TAG, "onNext: "+s);
+                    public void onNext(Success s) {
+                        Log.d(WasteTreatmentApplication.TAG, "UpImage onNext: "+s);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d(WasteTreatmentApplication.TAG, "onError: "+e.toString());
+                        Log.d(WasteTreatmentApplication.TAG, "UpImage onError: "+e.toString());
 
                     }
 

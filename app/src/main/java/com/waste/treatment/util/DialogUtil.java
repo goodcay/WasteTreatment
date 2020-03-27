@@ -1,12 +1,7 @@
 package com.waste.treatment.util;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.widget.Toast;
-
-import com.waste.treatment.ui.CollectActivity;
 
 
 public class DialogUtil {

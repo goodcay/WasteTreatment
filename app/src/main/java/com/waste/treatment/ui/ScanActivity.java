@@ -10,11 +10,10 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.olc.scan.ScanManager;
 import com.waste.treatment.R;
 
 public class ScanActivity extends AppCompatActivity {
-    private ScanManager sm;
+   /* private ScanManager sm;
     private TextView tv;
     String  m_Broadcastname = "com.barcode.sendBroadcast";
     MyCodeReceiver receiver = new MyCodeReceiver();
@@ -57,5 +56,5 @@ public class ScanActivity extends AppCompatActivity {
                 }
             }
         }
-    }
+    }*/
 }

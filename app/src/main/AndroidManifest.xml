@@ -21,43 +21,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-<!--
-        <activity android:name=".ui.test.MapTestActivity"></activity>
--->
+
+        <activity android:name=".ui.QueryActivity"></activity>
+
+        <activity android:name=".ui.test.TestScanActivity"></activity> <!-- <activity android:name=".ui.test.PrintTestActivity"></activity> -->
+        <!-- <activity android:name=".ui.test.MapTestActivity"></activity> -->
         <activity android:name=".ui.RouteActivity" /> <!-- <activity android:name=".ui.test.UploadImageActivity"></activity> -->
         <activity android:name=".ui.RuiKuActivity" /> <!-- <activity android:name=".http.RxJavaTestActivity"></activity> -->
-        <activity
-            android:name=".ui.PrintSetActivity"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".ui.ChangePasswordActivity"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity android:name=".ui.TestPrintActivity" />
-        <activity
-            android:name=".ui.CollectActivity"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".ui.CollectActivity1"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity android:name=".ui.MapActivity" />
-        <activity android:name=".ui.ImgActivity" />
-        <activity android:name=".ui.PrintActivity" />
-        <activity android:name=".ui.GpsActivity" />
-        <activity
-            android:name=".ui.ScanActivity"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".ui.MainActivity"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".ui.LoginActivity"
-            android:screenOrientation="fullSensor">
+        <activity android:name=".ui.PrintSetActivity" />
+        <activity android:name=".ui.ChangePasswordActivity" />
+        <activity android:name=".ui.test.PrintTestActivity" />
+        <activity android:name=".ui.CollectActivity" />
+        <activity android:name=".ui.ScanActivity" />
+        <activity android:name=".ui.MainActivity" />
+        <activity android:name=".ui.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

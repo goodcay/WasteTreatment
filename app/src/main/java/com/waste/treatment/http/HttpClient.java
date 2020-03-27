@@ -20,13 +20,10 @@ public class HttpClient {
     private Context context;
     private static HttpClient sHttpUtils;
     private Api mWTClient;
-    private Api mMyObservableClient;
     private OkHttpClient okHttpClient;
-    private Api mJuHelient;
 
 
-    private static final String baseUrl="http://192.168.121.59/";
-    private static final String juheUrl = "http://v.juhe.cn/";
+    private static final String baseUrl="http://182.150.35.229:8848/";
     public static HttpClient getInstance() {
         if (sHttpUtils == null) {
             sHttpUtils = new HttpClient();
@@ -65,32 +62,15 @@ public class HttpClient {
     }
     public Api geData1() {
 
-        mWTClient = new Retrofit.Builder().baseUrl("http://192.168.1.59:8000/")
+        mWTClient = new Retrofit.Builder().baseUrl("http://182.150.35.229:8849/")
                 .addConverterFactory(FastJsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(getOkHttpClient()).build().create(Api.class);
         return mWTClient;
     }
 
-    public Api getDouBan() {
-        if (mMyObservableClient == null) {
-            mMyObservableClient = new Retrofit.Builder().baseUrl("https://api.douban.com/")
-                    .addConverterFactory(FastJsonConverterFactory.create())
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .client(getOkHttpClient()).build().create(Api.class);
-        }
-        return mMyObservableClient;
-    }
 
-    public Api getmJuHeClient(){
-        mJuHelient = new Retrofit.Builder().baseUrl(juheUrl)
-                .addConverterFactory(FastJsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(getOkHttpClient())
-                .build()
-                .create(Api.class);
-        return  mJuHelient;
 
-    }
+
 
 }

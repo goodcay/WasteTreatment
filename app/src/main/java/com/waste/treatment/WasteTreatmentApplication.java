@@ -10,13 +10,18 @@ public class WasteTreatmentApplication extends Application {
     private   String userName="Admin";
     private   String userId="0";
     private   String routeId =null;
+    private   String siji =null;
+    private   String chepai  =null;
 
     public void setLoginMsg(String userName, String userId) {
         this.userName = userName;
         this.userId = userId;
     }
-    public void setRouteId(String routeId){
+    public void setRouteId(String routeId,String siji,String chepai){
         this.routeId = routeId;
+        this.siji = siji;
+        this.chepai = chepai;
+
     }
     public String getRouteId (){
         return routeId;
@@ -27,6 +32,13 @@ public class WasteTreatmentApplication extends Application {
     public String getUserId(){
         return userId;
     }
+    public String getSiji(){
+        return siji;
+    }
+    public String getChepai(){
+        return chepai;
+    }
+
     public final static String TAG ="CAY";
     public static WasteTreatmentApplication instance;
     @Override

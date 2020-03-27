@@ -1,16 +1,19 @@
 package com.waste.treatment.bean;
 
 public class GenRecyleBean {
-    private  boolean IsSuccess;
+    private boolean IsSuccess;
     private String ErrorMsg;
-    private CodeBean Content;
+    private GenRecyleContentBean Content;
 
     public void setIsSuccess(boolean isSuccess) {
-        IsSuccess =isSuccess;
+        IsSuccess = isSuccess;
     }
+
     public boolean getIsSuccess() {
         return IsSuccess;
     }
+
+
     public String getErrorMsg() {
         return ErrorMsg;
     }
@@ -19,11 +22,11 @@ public class GenRecyleBean {
         ErrorMsg = errorMsg;
     }
 
-    public CodeBean getContent() {
+    public GenRecyleContentBean getContent() {
         return Content;
     }
 
-    public void setContent(CodeBean content) {
+    public void setContent(GenRecyleContentBean content) {
         Content = content;
     }
 }

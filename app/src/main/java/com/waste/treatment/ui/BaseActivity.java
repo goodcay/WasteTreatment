@@ -1,5 +1,6 @@
 package com.waste.treatment.ui;
 
+import android.content.pm.ActivityInfo;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.View;
@@ -36,6 +37,7 @@ public abstract class BaseActivity <SV extends ViewDataBinding> extends AppCompa
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         Utils.makeStatusBarTransparent(this);
+        setRequestedOrientation(ActivityInfo .SCREEN_ORIENTATION_PORTRAIT);//竖屏
         mParentBinding = DataBindingUtil.setContentView(this, R.layout.activity_base);
         mLlProgressBar = mParentBinding.llProgressBar;
         ImageView img = mParentBinding.imgProgress;

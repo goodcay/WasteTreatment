@@ -2,16 +2,14 @@ package com.waste.treatment.http;
 
 
 import com.waste.treatment.bean.BeginRouteBean;
-import com.waste.treatment.bean.DouBan;
+import com.waste.treatment.bean.DataBean;
 import com.waste.treatment.bean.GenRecyleBean;
 import com.waste.treatment.bean.GetCarsBean;
 import com.waste.treatment.bean.GetDriverBean;
+import com.waste.treatment.bean.GetRouteBean;
 import com.waste.treatment.bean.GetTypesBean;
 import com.waste.treatment.bean.GetUsersBean;
 import com.waste.treatment.bean.Success;
-import com.waste.treatment.bean.newsBean;
-
-import java.math.BigDecimal;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
@@ -152,8 +150,8 @@ public interface Api {
 
 
     @Multipart
-    @POST("/upload")
-    Observable<String> uploadImage(@Part MultipartBody.Part part);
+    @POST("/servlet/UploadFile")
+    Observable<Success> uploadImage(@Part MultipartBody.Part part);
 
     /**
      * 入库
@@ -175,6 +173,27 @@ public interface Api {
     @GET("/WhhService.asmx/OutStock")
     Observable<Success> outStock(@Query("recyleCode") String recyleCode,@Query("amount") String amount,@Query("operatorId") String operatorId);
 
+    /**
+     * 出库
+     * @param recyleCode
+     * @param operatorId
+     * @return
+     */
+    @GET("/WhhService.asmx/InvalidRecyle")
+    Observable<Success> invalidRecyle(@Query("recyleCode") String recyleCode,@Query("operatorId") String operatorId);
+
+
+    /**
+     * 获取废物信息
+     * @param type
+     * @return
+     */
+
+    @GET("/WhhService.asmx/GetRecyles")
+    Observable<DataBean> getRecyles(@Query("type") String type);
+
+    @GET("/WhhService.asmx/GetRoute")
+    Observable<GetRouteBean> getRoute(@Query("operatorId") String operatorId);
 
 }
 
