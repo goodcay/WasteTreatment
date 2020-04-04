@@ -69,7 +69,7 @@ public class UploadImageActivity extends AppCompatActivity {
         //生成接口需要的list
         MultipartBody.Part parts =MultipartBody.Part.createFormData("uploadfile", file.getName(), imageBody);
 
-        HttpClient.getInstance().geData1().uploadImage(parts)
+        HttpClient.getInstance().geData1().uploadImage(parts,"1")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Success>() {

@@ -10,7 +10,14 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.preference.READ_PHONE_STATE" />
+    <uses-permission android:name="android.preference.READ_PHONE_STATE" /> <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" /> <!-- Android O之后开启前台服务需要申请该权限 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" /> <!-- Android Q之后，后台定位需要申请该权限 -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /> <!-- 用于Android M及以上系统，申请加入忽略电池优化白名单，可选权限，非必须 -->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"></uses-permission>
 
     <application
         android:name=".WasteTreatmentApplication"
@@ -21,10 +28,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
-        <activity android:name=".ui.QueryActivity"></activity>
-
-        <activity android:name=".ui.test.TestScanActivity"></activity> <!-- <activity android:name=".ui.test.PrintTestActivity"></activity> -->
+        <activity android:name=".ui.test.TraceActivity"></activity>
+        <activity android:name=".ui.InvalidRecyleActivity" />
+        <activity android:name=".ui.QueryActivity" />
+        <activity android:name=".ui.test.TestScanActivity" /> <!-- <activity android:name=".ui.test.PrintTestActivity"></activity> -->
         <!-- <activity android:name=".ui.test.MapTestActivity"></activity> -->
         <activity android:name=".ui.RouteActivity" /> <!-- <activity android:name=".ui.test.UploadImageActivity"></activity> -->
         <activity android:name=".ui.RuiKuActivity" /> <!-- <activity android:name=".http.RxJavaTestActivity"></activity> -->
@@ -46,9 +53,24 @@
             android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote" /> <!-- 百度地图 -->
+
+        <service
+            android:name="com.baidu.trace.LBSTraceService"
+            android:enabled="true"
+            android:process=":remote">
+        </service>
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="3aFRd1FXNeP8jquqDAAtMcoern4RzQ6B" />
+        <receiver
+            android:name=".receiver.MyReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter android:priority="1000">
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+        <service android:name=".service.MyService"/>
     </application>
 
 </manifest>

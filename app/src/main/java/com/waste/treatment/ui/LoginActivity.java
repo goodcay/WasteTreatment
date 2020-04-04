@@ -10,6 +10,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -25,6 +26,7 @@ import com.waste.treatment.bean.GetUsersBean;
 import com.waste.treatment.bean.Success;
 import com.waste.treatment.databinding.ActivityLoginBinding;
 import com.waste.treatment.http.HttpClient;
+import com.waste.treatment.service.MyService;
 import com.waste.treatment.util.DialogUtil;
 import com.waste.treatment.util.Tips;
 import com.waste.treatment.util.Utils;
@@ -46,6 +48,16 @@ public class LoginActivity extends AppCompatActivity {
         Utils.makeStatusBarTransparent(this);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//竖屏
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
+
+
+        Intent mBootIntent = new Intent(this, MyService.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            this.startForegroundService(mBootIntent);
+        } else {
+            this.startService(mBootIntent);
+        }
+
+
         mBinding.ilTitle.tvTitle.setText(getResources().getString(R.string.login_btn_text));
         waitingDialog = DialogUtil.waitingDialog(LoginActivity.this, "正在登陆···");
         mBinding.loginBtn.setOnClickListener(new View.OnClickListener() {
@@ -60,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
                         ActivityCompat.requestPermissions(LoginActivity.this, Utils.permissionsREAD, 0);
                     } else {
                         waitingDialog.show();
-                        HttpClient.getInstance().geData().loginIn(mBinding.loginNameEdt.getText().toString().trim(),mBinding.loginPwdEdt.getText().toString().trim())
+                        HttpClient.getInstance().geData().loginIn(mBinding.loginNameEdt.getText().toString().trim(), mBinding.loginPwdEdt.getText().toString().trim())
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(new Observer<Success>() {
@@ -71,12 +83,12 @@ public class LoginActivity extends AppCompatActivity {
 
                                     @Override
                                     public void onNext(Success success) {
-                                        Log.d(WasteTreatmentApplication.TAG, "success: "+success.toString());
-                                        if (success.getIsSuccess()){
+                                        Log.d(WasteTreatmentApplication.TAG, "success: " + success.toString());
+                                        if (success.getIsSuccess()) {
                                             getUser(mBinding.loginNameEdt.getText().toString().trim());
                                             //startActivity(new Intent(LoginActivity.this, MainActivity.class));
 
-                                        }else {
+                                        } else {
                                             mBinding.errorLl.setVisibility(View.VISIBLE);
                                             waitingDialog.cancel();
                                         }
@@ -84,7 +96,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                     @Override
                                     public void onError(Throwable e) {
-                                        Log.d(WasteTreatmentApplication.TAG, "onError: "+e.toString());
+                                        Log.d(WasteTreatmentApplication.TAG, "onError: " + e.toString());
                                         waitingDialog.cancel();
                                         Tips.show("登录异常");
                                     }
@@ -94,7 +106,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                     }
                                 });
-                        
+
                     }
 
 

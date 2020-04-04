@@ -35,6 +35,7 @@ import com.waste.treatment.http.HttpClient;
 import com.waste.treatment.ui.CollectActivity;
 import com.waste.treatment.ui.QueryActivity;
 import com.waste.treatment.ui.RuiKuActivity;
+import com.waste.treatment.ui.test.TraceActivity;
 import com.waste.treatment.util.Tips;
 import com.waste.treatment.util.Utils;
 
@@ -53,8 +54,8 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements V
     private MapView mapView;
     private int carId = 0;
     private int driveId = 0;
-    private String driveName = null;
-    private String carName = null;
+  //  private String driveName = null;
+   // private String carName = null;
     private boolean firstLocation = false;
 
     @Override
@@ -154,16 +155,16 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements V
                 startActivity(new Intent(getActivity(), CollectActivity.class));
                 break;
             case R.id.ll_yfrk:
-                startIntent(RuiKuActivity.class, Objects.requireNonNull(getActivity()).getResources().getString(R.string.yfrk),"InStock",1);
+                startIntent(RuiKuActivity.class, Objects.requireNonNull(getActivity()).getResources().getString(R.string.yfrk),"InStock",1,getActivity().getResources().getString(R.string.kc_hint));
                 break;
             case R.id.ll_yfck:
-                startIntent(RuiKuActivity.class,Objects.requireNonNull(getActivity()).getResources().getString(R.string.yfck),"OutStock",2);
+                startIntent(RuiKuActivity.class,Objects.requireNonNull(getActivity()).getResources().getString(R.string.yfck),"OutStock",2,getActivity().getResources().getString(R.string.dxh_hint));
                 break;
             case R.id.ll_yfxf:
-                startIntent(RuiKuActivity.class,Objects.requireNonNull(getActivity()).getResources().getString(R.string.yfxf),"Invalid",3);
+                startIntent(RuiKuActivity.class,Objects.requireNonNull(getActivity()).getResources().getString(R.string.yfxf),"Invalid",3,null);
                 break;
             case R.id.ll_yfys:
-                startIntent(RuiKuActivity.class,Objects.requireNonNull(getActivity()).getResources().getString(R.string.yfys),"new",0);
+                startIntent(RuiKuActivity.class,Objects.requireNonNull(getActivity()).getResources().getString(R.string.yfys),"new",0,getActivity().getResources().getString(R.string.ys_hint));
                 break;
             case R.id.ll_yfcx:
                 startActivity(new Intent(getActivity(), QueryActivity.class));
@@ -320,7 +321,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements V
                     public void onNext(final GetCarsBean getCarsBean) {
                         final String[] items = new String[getCarsBean.getContent().size()];
                         carId = getCarsBean.getContent().get(0).getOid();
-                        carName = getCarsBean.getContent().get(0).getName();
+                      //  carName = getCarsBean.getContent().get(0).getName();
                         for (int i = 0; i < getCarsBean.getContent().size(); i++) {
                             items[i] = getCarsBean.getContent().get(i).getName();
                         }
@@ -333,7 +334,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements V
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         carId = getCarsBean.getContent().get(which).getOid();
-                                        carName = getCarsBean.getContent().get(which).getName();
+                                      //  carName = getCarsBean.getContent().get(which).getName();
                                         Log.d(TAG, "onClick: " + carId);
 
                                     }
@@ -381,7 +382,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements V
                             items[i] = getCarsBean.getContent().get(i).getChineseName();
                         }
                         driveId = getCarsBean.getContent().get(0).getID();
-                        driveName = getCarsBean.getContent().get(0).getChineseName();
+                       // driveName = getCarsBean.getContent().get(0).getChineseName();
                         AlertDialog.Builder singleChoiceDialog =
                                 new AlertDialog.Builder(getActivity());
                         singleChoiceDialog.setTitle("请选择司机");
@@ -391,7 +392,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements V
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         driveId = getCarsBean.getContent().get(which).getID();
-                                        driveName = getCarsBean.getContent().get(which).getChineseName();
+                                        //driveName = getCarsBean.getContent().get(which).getChineseName();
 
                                         Log.d(TAG, "onClick: " + carId);
 
@@ -435,7 +436,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements V
                     @Override
                     public void onNext(BeginRouteBean beginRouteBean) {
                         if (beginRouteBean.getIsSuccess()) {
-                            WasteTreatmentApplication.getInstance().setRouteId(Integer.toString(beginRouteBean.getContent().getOid()), driveName, carName);
+                            WasteTreatmentApplication.getInstance().setRouteId(Integer.toString(beginRouteBean.getContent().getOid())/*, driveName, carName*/);
                             Tips.show("已生成路线");
                         } else {
                             Tips.show(beginRouteBean.getErrorMsg());
@@ -458,7 +459,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements V
                 });
     }
 
-    private void startIntent(Class<?> cl,String titleName,String type,int state){
+    private void startIntent(Class<?> cl,String titleName,String type,int state,String hint){
         //利用Intent实现跳转
         Intent intent = new Intent(getActivity(), cl);
 //利用Bundle携带数据,类似于Map集合,携带数据有很多种这里主要介绍这种
@@ -466,6 +467,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements V
         bundle.putString("titleName", titleName);
         bundle.putString("type", type);
         bundle.putInt("state",state);
+        bundle.putString("hint",hint);
         intent.putExtras(bundle);
         startActivity(intent);
     }
@@ -483,7 +485,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements V
                     @Override
                     public void onNext(GetRouteBean getRouteBean) {
                         if (getRouteBean.getIsSuccess()){
-                            WasteTreatmentApplication.instance.setRouteId(Integer.toString(getRouteBean.getContent().getOid()),getRouteBean.getContent().getDriver().getChineseName(),getRouteBean.getContent().getCarId().getName());
+                            WasteTreatmentApplication.instance.setRouteId(Integer.toString(getRouteBean.getContent().getOid())/*,getRouteBean.getContent().getDriver().getChineseName(),getRouteBean.getContent().getCarId().getName()*/);
                         }else {
                             showNormalDialog();
 

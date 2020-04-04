@@ -2,10 +2,12 @@ package com.waste.treatment.http;
 
 
 import com.waste.treatment.bean.BeginRouteBean;
+import com.waste.treatment.bean.Data2Bean;
 import com.waste.treatment.bean.DataBean;
 import com.waste.treatment.bean.GenRecyleBean;
 import com.waste.treatment.bean.GetCarsBean;
 import com.waste.treatment.bean.GetDriverBean;
+import com.waste.treatment.bean.GetPosBean;
 import com.waste.treatment.bean.GetRouteBean;
 import com.waste.treatment.bean.GetTypesBean;
 import com.waste.treatment.bean.GetUsersBean;
@@ -121,7 +123,7 @@ public interface Api {
      * @return
      */
     @GET("/WhhService.asmx/GenRecyle")
-    Observable<GenRecyleBean> genRecyle(@Query("types") String types, @Query("weight") String weight, @Query("operatorId") String operatorId, @Query("routeId") String routeId, @Query("companyId") String companyId, @Query("filePath") String filePath);
+    Observable<GenRecyleBean> genRecyle(@Query("imei") String imei,@Query("types") String types, @Query("weight") String weight, @Query("operatorId") String operatorId, @Query("routeId") String routeId, @Query("companyId") String companyId, @Query("filePath") String filePath);
 
     /**
      * 退出登录
@@ -151,7 +153,7 @@ public interface Api {
 
     @Multipart
     @POST("/servlet/UploadFile")
-    Observable<Success> uploadImage(@Part MultipartBody.Part part);
+    Observable<Success> uploadImage(@Part MultipartBody.Part part, @Query("type") String type);
 
     /**
      * 入库
@@ -174,13 +176,13 @@ public interface Api {
     Observable<Success> outStock(@Query("recyleCode") String recyleCode,@Query("amount") String amount,@Query("operatorId") String operatorId);
 
     /**
-     * 出库
+     * 销毁
      * @param recyleCode
      * @param operatorId
      * @return
      */
     @GET("/WhhService.asmx/InvalidRecyle")
-    Observable<Success> invalidRecyle(@Query("recyleCode") String recyleCode,@Query("operatorId") String operatorId);
+    Observable<Success> invalidRecyle(@Query("recyleCode") String recyleCode,@Query("operatorId") String operatorId,@Query("filePath") String filePath);
 
 
     /**
@@ -192,8 +194,15 @@ public interface Api {
     @GET("/WhhService.asmx/GetRecyles")
     Observable<DataBean> getRecyles(@Query("type") String type);
 
+
     @GET("/WhhService.asmx/GetRoute")
     Observable<GetRouteBean> getRoute(@Query("operatorId") String operatorId);
 
+
+    @GET("/WhhService.asmx/GetRecyleByCode")
+    Observable<Data2Bean> getRecyleByCode(@Query("recyleCode") String recyleCode);
+
+    @GET("/WhhService.asmx/GetPos")
+    Observable<GetPosBean> getPos(@Query("recyleCode") String recyleCode);
 }
 

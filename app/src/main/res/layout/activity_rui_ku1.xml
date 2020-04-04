@@ -23,7 +23,7 @@
             android:background="@color/color_stroke_background"
             android:layout_height="1dp" />
 
-        <RelativeLayout
+        <!--<RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:gravity="center_vertical">
@@ -54,7 +54,19 @@
                 android:background="@drawable/btn_one_background"
                 android:text="@string/ruiku"
                 android:textColor="@color/color_white" />
-        </RelativeLayout>
+        </RelativeLayout>-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="@dimen/dp_48">
+            <TextView
+                android:id="@+id/text_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                />
+        </LinearLayout>
+
 
     </LinearLayout>
 </layout>

@@ -6,13 +6,17 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.icu.text.CaseMap;
 import android.net.Uri;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.DisplayMetrics;
@@ -27,6 +31,7 @@ import androidx.core.content.FileProvider;
 
 import com.waste.treatment.BuildConfig;
 import com.waste.treatment.WasteTreatmentApplication;
+import com.waste.treatment.ui.test.TraceActivity;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -46,8 +51,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.UUID;
 import java.util.logging.Logger;
 
+import static android.text.TextUtils.isEmpty;
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import static android.util.TypedValue.COMPLEX_UNIT_IN;
 import static android.util.TypedValue.COMPLEX_UNIT_MM;
@@ -70,7 +77,9 @@ public class Utils {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA,
-            Manifest.permission.ACCESS_FINE_LOCATION
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.READ_PHONE_STATE
+
     };
 
     /**
@@ -273,7 +282,7 @@ public class Utils {
      * 将图片转换成Base64编码的字符串
      */
     public static String imageToBase64(String path) {
-        if (TextUtils.isEmpty(path)) {
+        if (isEmpty(path)) {
             return null;
         }
         InputStream is = null;
@@ -438,6 +447,21 @@ public class Utils {
         }
         return  df2.format(date);
 
+    }
+
+    public static String getIMEI(Context mContexts){
+        TelephonyManager telephonyManager = (TelephonyManager) mContexts.getSystemService(mContexts.TELEPHONY_SERVICE);
+        if (ActivityCompat.checkSelfPermission(mContexts, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return null;
+        }
+        return telephonyManager.getDeviceId();
     }
 
 }

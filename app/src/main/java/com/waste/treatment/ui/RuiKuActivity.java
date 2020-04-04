@@ -35,6 +35,7 @@ public class RuiKuActivity extends BaseActivity<ActivityRuiKu1Binding> {
     public List<Data1Bean> data = new ArrayList<>();
     private String type;
     private String barcodeStr;
+    private String hint;
     ScanDevice sm;
     private int state;
     private final static String SCAN_ACTION = "scan.rcv.message";
@@ -45,11 +46,16 @@ public class RuiKuActivity extends BaseActivity<ActivityRuiKu1Binding> {
         Bundle bundle = getIntent().getExtras();
         type = bundle.getString("type");
         state = bundle.getInt("state");
+        hint =bundle.getString("hint");
         mParentBinding.ilTitle.tvTitle.setText(bundle.getString("titleName"));
         mParentBinding.ilTitle.ivBack.setVisibility(View.VISIBLE);
+        if (state!=3){
+            mBinding.textHint.setText(hint);
+        }else {
+            mBinding.textHint.setVisibility(View.GONE);
+        }
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mBinding.rvList.setLayoutManager(layoutManager);
-
         adapter = new RuiKuAdapter(R.layout.rev_item, data, this);
         mBinding.rvList.setAdapter(adapter);
 
@@ -57,41 +63,6 @@ public class RuiKuActivity extends BaseActivity<ActivityRuiKu1Binding> {
         sm.setOutScanMode(0);//启动就是广播模式
         sm.openScan();
         getData();
-
-
-        //  refreshTotal();
-/*        mBinding.allCb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mBinding.allCb.isChecked()) {
-                    for (int i = 0; i < data.size(); i++) {
-                        data.get(i).setCheck(true);
-                    }
-                } else {
-                    for (int i = 0; i < data.size(); i++) {
-                        data.get(i).setCheck(false);
-                    }
-                }
-                refreshTotal();
-                adapter.notifyDataSetChanged();
-            }
-        });*/
-
-  /*      mBinding.btnRk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (int i = 0; i < testData.size(); i++) {
-                    testData.get(i).setCheck(true);
-                }
-            }
-        });*/
-        mBinding.btnRk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
 
     }
 
@@ -145,53 +116,13 @@ public class RuiKuActivity extends BaseActivity<ActivityRuiKu1Binding> {
 
     }
 
-/*
-    private void refreshTotal(){
-        int t =0;
-
-        for (int i=0;i<testData.size();i++){
-
-            if (testData.get(i).isCheck()){
-                t++;
-            }
-        }
-        mBinding.tvTotal.setText("合计："+t);
-
-    }
-*/
-   /*  private void adapterSet(){
-
-        adapter = new RuiKuAdapter(R.layout.rev_item, data, this);
-       adapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-               // Tips.show("item:"+position);
-            }
-        });
-
-        adapter.setOnItemChildClickListener(new OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                if (view.getId()==R.id.ck){
-                    CheckBox cb = (CheckBox) view;
-                    if (cb.isChecked()){
-                        testData.get(position).setCheck(true);
-                    }else {
-                        testData.get(position).setCheck(false);
-                    }
-                    refreshTotal();
-                }
-            }
-        });
-        mBinding.rvList.setAdapter(adapter);
-    }*/
-
     @Override
     protected void onResume() {
         super.onResume();
         IntentFilter filter = new IntentFilter();
         filter.addAction(SCAN_ACTION);
         registerReceiver(mScanReceiver, filter);
+        onRefresh();
     }
 
     private BroadcastReceiver mScanReceiver = new BroadcastReceiver() {
@@ -231,9 +162,9 @@ public class RuiKuActivity extends BaseActivity<ActivityRuiKu1Binding> {
         getData();
     }
 
-    private void update(int i, String recyleCode, String amount, String operatorid) {
 
-        Log.i(WasteTreatmentApplication.TAG, "入库: int" + i + "  recyleCode:" + recyleCode + "  amount:" + amount + "    operatorid:" + operatorid);
+
+    private void update(int i, String recyleCode, String amount, String operatorid) {
         switch (i) {
             case 0:
                 HttpClient.getInstance().geData().isStock(recyleCode, amount, operatorid)
@@ -301,36 +232,13 @@ public class RuiKuActivity extends BaseActivity<ActivityRuiKu1Binding> {
                         });
                 break;
             case 2:
-                HttpClient.getInstance().geData().invalidRecyle(recyleCode, operatorid)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Observer<Success>() {
-                            @Override
-                            public void onSubscribe(Disposable d) {
-
-                            }
-
-                            @Override
-                            public void onNext(Success success) {
-                                if (success.getIsSuccess()){
-                                    Tips.show("销毁成功");
-                                }else {
-                                    Tips.show("销毁失败");
-                                }
-
-                                onRefresh();
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                                Tips.show("销毁失败");
-                            }
-
-                            @Override
-                            public void onComplete() {
-
-                            }
-                        });
+                //利用Intent实现跳转
+                Intent intent = new Intent(RuiKuActivity.this,InvalidRecyleActivity.class);
+                //利用Bundle携带数据,类似于Map集合,携带数据有很多种这里主要介绍这种
+                Bundle bundle = new Bundle();
+                bundle.putString("code", recyleCode);
+                intent.putExtras(bundle);
+                startActivity(intent);
                 break;
         }
 

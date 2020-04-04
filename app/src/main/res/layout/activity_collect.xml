@@ -10,10 +10,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@color/color_background">
-
-        <include
-            android:id="@+id/il_title"
-            layout="@layout/base_title" />
         <LinearLayout
             android:layout_width="match_parent"
             android:paddingStart="5dp"
@@ -37,10 +33,9 @@
                     android:layout_marginStart="14.5dp"/>
 
                 <Spinner
-                    android:id="@+id/sp_ks"
+                    android:id="@+id/sp_Company"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:entries="@array/keshi"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -95,33 +90,7 @@
                 android:layout_height="1dp"
                 android:background="@color/color_text_line" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/title_bar_high"
-                android:background="@drawable/bg_edit"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="18dp"
-                    android:text="@string/mingcheng"
-                    android:textSize="14sp"
-                    android:layout_marginStart="14.5dp"/>
-
-                <EditText
-                    android:id="@+id/et_mingcheng"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="14dp"
-                    android:layout_marginEnd="14dp"
-
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:hint="@string/hint_feiwumingcheng"
-                    android:singleLine="true"
-                    android:textSize="14sp" />
-            </LinearLayout>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -199,7 +168,7 @@
                 android:layout_marginTop="25dp"
                 android:layout_marginEnd="15dp"
                 android:background="@drawable/login_btn"
-                android:text="@string/login_up_text"
+                android:text="@string/save"
                 android:textColor="@color/color_white"
                 android:textSize="18sp" />
 

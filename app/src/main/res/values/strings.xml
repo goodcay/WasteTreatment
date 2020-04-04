@@ -18,7 +18,6 @@
     <string name="chepai">车牌：</string>
     <string name="zhongliang">重量：</string>
     <string name="collect_title">医废收集</string>
-    <string name="login_up_text">上传</string>
     <string name="quanxuan">全选</string>
     <string name="hint_zhongliang">请输入重量（单位KG）</string>
     <string name="hint_feiwumingcheng">请输入废物名称</string>
@@ -72,4 +71,10 @@
     <string name="yfck">待销毁</string>
     <string name="yfxf">已销毁</string>
     <string name="yfcx">查询</string>
+    <string name="xiaohui">销毁</string>
+
+
+    <string name="ys_hint">扫码进行入库操作</string>
+    <string name="kc_hint">扫码进行出库操作</string>
+    <string name="dxh_hint">扫码进行销毁操作</string>
 </resources>

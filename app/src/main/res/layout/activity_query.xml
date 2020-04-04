@@ -8,7 +8,7 @@
     <LinearLayout
         android:id="@+id/ll_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/color_btn"
         android:orientation="vertical">
 
@@ -55,11 +55,254 @@
                 android:paddingEnd="14dp"
                 android:textSize="18sp" />
         </RelativeLayout>
-
-        <FrameLayout
-            android:id="@+id/layout_container"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:orientation="vertical"
+            android:background="@color/color_white"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_30"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/dp_5"
+                android:paddingEnd="@dimen/dp_5">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="公司名称："
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_gsmc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_30"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/dp_5"
+                android:paddingEnd="@dimen/dp_5">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="废物编码："
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_fwbm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_30"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/dp_5"
+                android:paddingEnd="@dimen/dp_5">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fw_leixing"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_fwlx"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_30"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/dp_5"
+                android:paddingEnd="@dimen/dp_5">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="废物重量："
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_fwzl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_30"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/dp_5"
+                android:paddingEnd="@dimen/dp_5">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="收集时间："
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_sjsj"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        <!--    <LinearLayout
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_30"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/dp_5"
+                android:paddingEnd="@dimen/dp_5">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="入库时间："
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_rksj"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="20-12-36 12:06:33"
+                    android:textColor="@color/color_black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_30"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/dp_5"
+                android:paddingEnd="@dimen/dp_5">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="出库时间："
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_cksj"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="20-12-36 12:06:33"
+                    android:textColor="@color/color_black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_30"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/dp_5"
+                android:paddingEnd="@dimen/dp_5">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="销毁时间："
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_xhsj"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="20-12-36 12:06:33"
+                    android:textColor="@color/color_black"
+                    android:textSize="16sp" />
+            </LinearLayout>-->
+
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_30"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/dp_5"
+                android:paddingEnd="@dimen/dp_5">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="运输车牌："
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_yscp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_30"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/dp_5"
+                android:paddingEnd="@dimen/dp_5">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="运输司机："
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_yssj"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_30"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/dp_5"
+                android:paddingEnd="@dimen/dp_5">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="收  集  人："
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_sjr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:id="@+id/ll_map"
+                android:orientation="vertical"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+
+
 
     </LinearLayout>
 </layout>

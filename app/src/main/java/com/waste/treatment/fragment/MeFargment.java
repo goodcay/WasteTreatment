@@ -84,7 +84,7 @@ public class MeFargment extends Fragment {
                             public void onNext(Success success) {
                                 Log.d(WasteTreatmentApplication.TAG, "onNext: "+success.getIsSuccess());
                                 if (success.getIsSuccess()){
-                                    WasteTreatmentApplication.instance.setRouteId(null,null,null);
+                                    WasteTreatmentApplication.instance.setRouteId(null/*,null,null*/);
                                     WasteTreatmentApplication.instance.setLoginMsg(null,null);
                                     startActivity(new Intent(getActivity(), LoginActivity.class));
                                     Objects.requireNonNull(getActivity()).finish();

@@ -37,6 +37,8 @@ public class RouteActivity extends BaseActivity<ActivityRouteBinding> {
     private int driveId;
     private String driveName;
     private List<Integer> drivesId;
+    private List<Integer> carsId;
+
 
 
     @Override
@@ -54,7 +56,7 @@ public class RouteActivity extends BaseActivity<ActivityRouteBinding> {
         mBinding.spChepai.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                carId =position;
+                carId =carsId.get(position);
             }
 
             @Override
@@ -65,7 +67,7 @@ public class RouteActivity extends BaseActivity<ActivityRouteBinding> {
         mBinding.spSj.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                driveId =position;
+                driveId =drivesId.get(position);
             }
 
             @Override
@@ -90,7 +92,7 @@ public class RouteActivity extends BaseActivity<ActivityRouteBinding> {
                                 Log.d(TAG, "EndRoute: " +beginRouteBean.getIsSuccess());
                                 if (beginRouteBean.getIsSuccess()){
 
-                                    WasteTreatmentApplication.instance.setRouteId(null,null,null);
+                                    WasteTreatmentApplication.instance.setRouteId(null/*,null,null*/);
                                     isVis(true);
                                     Tips.show("路线结束成功");
                                 }
@@ -132,6 +134,8 @@ public class RouteActivity extends BaseActivity<ActivityRouteBinding> {
                     @Override
                     public void onNext(GetDriverBean getDriverBean) {
                         if (getDriverBean.getIsSuccess()) {
+
+                            Log.d(TAG, "Dta drives: "+getDriverBean.getContent().toString());
                             drives = new ArrayList<>();
                             drivesId = new ArrayList<>();
                             for (int i = 0; i < getDriverBean.getContent().size(); i++) {
@@ -171,9 +175,12 @@ public class RouteActivity extends BaseActivity<ActivityRouteBinding> {
                     @Override
                     public void onNext(GetCarsBean getCarsBean) {
                         if (getCarsBean.getIsSuccess()) {
+                            Log.d(TAG, "Data cars: "+getCarsBean.getContent().toString());
                             cars = new ArrayList<>();
+                            carsId= new ArrayList<>();
                             for (int i = 0; i < getCarsBean.getContent().size(); i++) {
                                 cars.add(getCarsBean.getContent().get(i).getName());
+                                carsId.add(getCarsBean.getContent().get(i).getOid());
                             }
                             adapterCar = new ArrayAdapter<String>(RouteActivity.this, android.R.layout.simple_spinner_item, cars);
                             adapterCar.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -222,9 +229,9 @@ public class RouteActivity extends BaseActivity<ActivityRouteBinding> {
 
                     @Override
                     public void onNext(BeginRouteBean beginRouteBean) {
-                        Log.d(TAG, "drives: "+drives.get(driveId)  +"    cars:"+cars.get(carId));
                         if (beginRouteBean.getIsSuccess()){
-                            WasteTreatmentApplication.getInstance().setRouteId(Integer.toString(beginRouteBean.getContent().getOid()),drives.get(driveId),cars.get(carId));
+                            Log.d(TAG, "success_back: "+beginRouteBean.getContent().toString());
+                            WasteTreatmentApplication.getInstance().setRouteId(Integer.toString(beginRouteBean.getContent().getOid())/*,drives.get(driveId),cars.get(carId)*/);
                             Tips.show("已生成路线");
                             isVis(WasteTreatmentApplication.instance.getRouteId().isEmpty());
                         }else {

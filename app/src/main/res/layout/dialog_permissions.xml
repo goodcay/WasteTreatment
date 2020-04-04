@@ -9,24 +9,24 @@
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="48dp"
         android:layout_gravity="center_vertical"
         android:gravity="center"
         android:text="提示"
         android:background="@color/color_btn"
         android:textColor="@color/color_white"
-        android:textSize="16sp" />
+        android:textSize="20sp" />
 
 
     <TextView
         android:id="@+id/tv_hint"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dp_26"
         android:textColor="@color/color_btn"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:textSize="16sp"
+        android:textSize="@dimen/dp_18"
         android:gravity="center"
         android:lineSpacingExtra="3dp"
         android:text="需要手动开启权限才能使用"/>
@@ -53,17 +53,17 @@
             android:id="@+id/btn_diss"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="30dp"
-            android:background="@color/color_text_line"
+            android:layout_height="@dimen/dp_45"
+            android:background="@drawable/login_btn1"
             android:text="取消"
             />
         <Button
             android:id="@+id/btn_add"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="30dp"
+            android:layout_height="45dp"
             android:layout_gravity="center"
-            android:background="@color/color_btn"
+            android:background="@drawable/login_btn"
             android:text="去设置"
             android:layout_marginLeft="20dp"
             android:textColor="@color/color_white" />

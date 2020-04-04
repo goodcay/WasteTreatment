@@ -63,7 +63,7 @@ dependencies {
     implementation files('libs/BaiduLBS_Android.jar')
     implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
-    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    // implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
@@ -74,4 +74,7 @@ dependencies {
     implementation 'me.weyye.hipermission:library:1.0.7'
     implementation files('libs/PrinterSDk_v1.0.1.jar')
     implementation files('libs/SDK_release_v2.1.1.jar')
+    implementation files('libs/BaiduTraceSDK_v3_1_5.jar')
+    implementation files('libs/bos-android-sdk-1.0.3.jar')
+   // implementation files('libs/okhttp-3.8.1.jar')
 }

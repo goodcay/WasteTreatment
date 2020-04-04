@@ -15,27 +15,31 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp">
 
             <LinearLayout
+                android:gravity="center_vertical"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/title_bar_high"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/bg_edit"
-                android:orientation="horizontal">
+                android:layout_height="@dimen/dp_30"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/dp_5"
+                android:paddingEnd="@dimen/dp_5">
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="18dp"
-                    android:layout_marginStart="14.5dp"
-                    android:text="@string/gongsi"
+                    android:layout_height="wrap_content"
+                    android:text="公司名称："
                     android:textSize="16sp" />
 
-                <Spinner
-                    android:id="@+id/sp_company"
+                <TextView
+                    android:id="@+id/tv_gsmc"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textSize="14sp" />
+                    android:layout_height="wrap_content"
+                    android:text="四川传达"
+                    android:textColor="@color/color_black"
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <TextView
@@ -44,33 +48,54 @@
                 android:background="@color/color_text_line" />
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/title_bar_high"
-                android:background="@drawable/bg_edit"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_30"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/dp_5"
+                android:paddingEnd="@dimen/dp_5">
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="18dp"
-                    android:layout_marginStart="14.5dp"
-                    android:text="@string/zhonglei"
+                    android:layout_height="wrap_content"
+                    android:text="废物编码："
                     android:textSize="16sp" />
 
-                <LinearLayout
-                    android:id="@+id/sp_zl"
+                <TextView
+                    android:id="@+id/tv_fwbm"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:text="四川传达"
+                    android:textColor="@color/color_black"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/ll_zhongnei"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                    </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/color_text_line" />
 
-                </LinearLayout>
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_30"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/dp_5"
+                android:paddingEnd="@dimen/dp_5">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="废物种类："
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_fwzl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="四川传达"
+                    android:textColor="@color/color_black"
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <TextView
@@ -80,36 +105,26 @@
 
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/title_bar_high"
-                android:background="@drawable/bg_edit"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="18dp"
-                    android:layout_marginStart="14.5dp"
-                    android:text="@string/zhongliang"
-                    android:textSize="16sp" />
-
-                <EditText
-                    android:id="@+id/et_zhongliang"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="14dp"
-                    android:layout_marginEnd="14dp"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:hint="@string/hint_zhongliang"
-                    android:inputType="number|numberDecimal"
-                    android:singleLine="true"
-                    android:textSize="14sp" />
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_30"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/dp_5"
+                android:paddingEnd="@dimen/dp_5">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="KG" />
+                    android:text="废物重量："
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_fwzhongliang"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="四川传达"
+                    android:textColor="@color/color_black"
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <TextView
@@ -154,7 +169,7 @@
                 android:layout_marginTop="25dp"
                 android:layout_marginEnd="15dp"
                 android:background="@drawable/login_btn"
-                android:text="@string/login_up_text"
+                android:text="@string/xiaohui"
                 android:textColor="@color/color_white"
                 android:textSize="18sp" />
 
