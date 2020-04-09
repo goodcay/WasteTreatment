@@ -150,11 +150,11 @@ public class RuiKuActivity extends BaseActivity<ActivityRuiKu1Binding> {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (sm != null) {
+        /*if (sm != null) {
             sm.stopScan();
             sm.setScanLaserMode(8);
             sm.closeScan();
-        }
+        }*/
     }
 
     @Override

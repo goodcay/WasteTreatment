@@ -5,7 +5,12 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
+import android.device.ScanDevice;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -28,11 +33,13 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityTestFramgeBinding mBinding;
-
+    ScanDevice sm;
+    private String barcodeStr;
 
     private List<Fragment> mFragments;
 
     private FragmentIndexAdapter mFragmentIndexAdapter;
+    private final static String SCAN_ACTION = "scan.rcv.message";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_test_framge);
         initData();
         initEvent();
+
     }
 
     private void initEvent() {
@@ -83,7 +91,8 @@ public class MainActivity extends AppCompatActivity {
             if (index == 2) {
                 // 跳转到Scan界面
               //  resetTextView();
-                Toast.makeText(MainActivity.this, "点击了扫描按钮", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(MainActivity.this, "点击了扫描按钮", Toast.LENGTH_SHORT).show();
+                sm.startScan();
             } else {
                 //选择某一页
                 mBinding.indexVpFragmentListTop.setCurrentItem(index, false);
@@ -133,17 +142,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
     @Override
     protected void onResume() {
         super.onResume();
         Log.d(WasteTreatmentApplication.TAG, "MainActivity:onResume: ");
-
+        sm = new ScanDevice();
+        sm.setOutScanMode(0);//启动就是广播模式
+        sm.openScan();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(SCAN_ACTION);
+        registerReceiver(mScanReceiver, filter);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         Log.d(WasteTreatmentApplication.TAG, "MainActivity:onPause: ");
+        unregisterReceiver(mScanReceiver);
 
     }
 
@@ -158,7 +174,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Log.d(WasteTreatmentApplication.TAG, "MainActivity:onDestroy: ");
-    }
+
+        if (sm != null) {
+            sm.stopScan();
+            sm.setScanLaserMode(8);
+            sm.closeScan();
+        }    }
 
     @Override
     protected void onStart() {
@@ -166,5 +187,26 @@ public class MainActivity extends AppCompatActivity {
         Log.d(WasteTreatmentApplication.TAG, "MainActivity:onStart: ");
 
     }
+    private BroadcastReceiver mScanReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            byte[] barocode = intent.getByteArrayExtra("barocode");
+            int barocodelen = intent.getIntExtra("length", 0);
+            byte temp = intent.getByteExtra("barcodeType", (byte) 0);
+            byte[] aimid = intent.getByteArrayExtra("aimid");
+            barcodeStr = new String(barocode, 0, barocodelen);
+            //利用Intent实现跳转
+            Intent intent1 = new Intent(MainActivity.this,QueryActivity.class);
+            //利用Bundle携带数据,类似于Map集合,携带数据有很多种这里主要介绍这种
+            Bundle bundle = new Bundle();
+            bundle.putString("code", barcodeStr);
+            intent1.putExtras(bundle);
+            Log.d(WasteTreatmentApplication.TAG, "onReceive: ");
+            startActivity(intent1);
+            sm.stopScan();
+        }
+    };
 }
 

@@ -167,7 +167,11 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements V
                 startIntent(RuiKuActivity.class,Objects.requireNonNull(getActivity()).getResources().getString(R.string.yfys),"new",0,getActivity().getResources().getString(R.string.ys_hint));
                 break;
             case R.id.ll_yfcx:
-                startActivity(new Intent(getActivity(), QueryActivity.class));
+                Intent intent = new Intent(getActivity(), QueryActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("code", "");
+                intent.putExtras(bundle);
+                startActivity(intent);
                 break;
 
         }

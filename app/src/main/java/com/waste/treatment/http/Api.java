@@ -49,7 +49,7 @@ public interface Api {
      */
 
     @GET("/WhhService.asmx/LoginIn")
-    Observable<Success> loginIn(@Query("operatorId") String operatorId, @Query("password") String password);
+    Observable<Success> loginIn(@Query("operatorId") String operatorId, @Query("password") String password , @Query("imei") String imei) ;
 
 
     /**
@@ -182,7 +182,7 @@ public interface Api {
      * @return
      */
     @GET("/WhhService.asmx/InvalidRecyle")
-    Observable<Success> invalidRecyle(@Query("recyleCode") String recyleCode,@Query("operatorId") String operatorId,@Query("filePath") String filePath);
+    Observable<Success> invalidRecyle(@Query("recyleCode") String recyleCode,@Query("operatorId") String operatorId,@Query("invalidPathPath") String filePath);
 
 
     /**

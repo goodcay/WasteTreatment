@@ -11,6 +11,14 @@ import android.content.pm.ActivityInfo;
 import android.database.DatabaseUtils;
 import android.device.ScanDevice;
 import android.os.Bundle;
+import android.printer.sdk.PosFactory;
+import android.printer.sdk.bean.BarCodeBean;
+import android.printer.sdk.bean.TextData;
+import android.printer.sdk.bean.enums.ALIGN_MODE;
+import android.printer.sdk.constant.BarCode;
+import android.printer.sdk.interfaces.IPosApi;
+import android.printer.sdk.interfaces.OnPrintEventListener;
+import android.printer.sdk.util.PowerUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -38,6 +46,7 @@ import com.waste.treatment.util.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.pda.serialport.SerialDriver;
 import io.reactivex.Observer;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -51,6 +60,17 @@ public class QueryActivity extends AppCompatActivity {
     private String barcodeStr;
     private MapView mapView;
     private Overlay mPolyline;
+    private IPosApi mPosApi;
+
+
+    private String danwei;
+    private String types;
+    private String chepai;
+    private String zhongliang;
+    private String siji;
+    private String shoujiren;
+    private String time;
+    private String code;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,10 +79,22 @@ public class QueryActivity extends AppCompatActivity {
         Utils.makeStatusBarTransparent(this);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//竖屏
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_query);
+        Bundle bundle = getIntent().getExtras();
+        String code1 = bundle.getString("code");
+        assert code1 != null;
+        if (!code1.equals("")){
+            showData(code1);
+            getPos(code1);
+
+        }
         mBinding.llMap.setVisibility(View.INVISIBLE);
         sm = new ScanDevice();
         sm.setOutScanMode(0);//启动就是广播模式
         sm.openScan();
+
+        initPos();
+        initBaiDuMap();
+
         mBinding.tvRightText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,7 +118,12 @@ public class QueryActivity extends AppCompatActivity {
                 finish();
             }
         });
-        initBaiDuMap();
+        mBinding.printBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                print(danwei,types,chepai,zhongliang,siji,shoujiren,time,code);
+            }
+        });
     }
 
     private BroadcastReceiver mScanReceiver = new BroadcastReceiver() {
@@ -124,11 +161,11 @@ public class QueryActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (sm != null) {
+       /* if (sm != null) {
             sm.stopScan();
             sm.setScanLaserMode(8);
             sm.closeScan();
-        }
+        }*/
     }
 
     private void showData(String recyleCode) {
@@ -144,6 +181,18 @@ public class QueryActivity extends AppCompatActivity {
                     @Override
                     public void onNext(Data2Bean data2Bean) {
                         if (data2Bean.getIsSuccess()) {
+                            danwei = data2Bean.getContent().getCompany().getName();
+                            types = data2Bean.getContent().getName();
+                            chepai = data2Bean.getContent().getRouteId().getCarId().getName();
+                            zhongliang = data2Bean.getContent().getWeight().toString();
+                            time = Utils.timeToTime1(data2Bean.getContent().getRecyleTime());
+                            siji = data2Bean.getContent().getRouteId().getDriver().getChineseName();
+                            shoujiren = data2Bean.getContent().getRouteId().getDriver().getChineseName();
+                            code = data2Bean.getContent().getCode();
+
+
+                            Log.d(WasteTreatmentApplication.TAG, "onNext: " + data2Bean.toString());
+
                             Log.d(WasteTreatmentApplication.TAG, "onNext: " + data2Bean.getContent().toString());
                             mBinding.tvGsmc.setText(data2Bean.getContent().getCompany().getName());
                             mBinding.tvFwbm.setText(data2Bean.getContent().getCode());
@@ -153,6 +202,7 @@ public class QueryActivity extends AppCompatActivity {
                             mBinding.tvYscp.setText(data2Bean.getContent().getRouteId().getCarId().getName());
                             mBinding.tvYssj.setText(data2Bean.getContent().getRouteId().getDriver().getChineseName());
                             mBinding.tvSjr.setText(data2Bean.getContent().getRouteId().getBeginOperator().getChineseName());
+                            mBinding.printBtn.setVisibility(View.VISIBLE);
 
                         } else {
                             Log.d(WasteTreatmentApplication.TAG, "onNext:error ");
@@ -187,13 +237,14 @@ public class QueryActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(GetPosBean getPosBean) {
+                        Log.d(WasteTreatmentApplication.TAG, "getPosBean: " + getPosBean.toString());
                         //构建折线点坐标
                         List<LatLng> points = new ArrayList<LatLng>();
                         for (int i = 0; i < getPosBean.getContent().getPos().size(); i++) {
                             LatLng p = new LatLng(getPosBean.getContent().getPos().get(i).getX(), getPosBean.getContent().getPos().get(i).getY());
                             points.add(p);
                         }
-                        if (points.size()>2){
+                        if (points.size() > 2) {
                             showMap(points);
                         }
                     }
@@ -268,4 +319,81 @@ public class QueryActivity extends AppCompatActivity {
         mapView.getMap().setMapStatus();*/
 
     }
+
+
+    public void initPos() {
+        PowerUtils.powerOnOrOff(1, "1");
+        PosFactory.registerCommunicateDriver(this, new SerialDriver()); // 注册串口类 Register serial driver
+        mPosApi = PosFactory.getPosDevice(); // 获取打印机实例 get printer driver
+        mPosApi.setPrintEventListener(onPrintEventListener);
+        mPosApi.openDev("/dev/ttyS2", 115200, 0);
+        mPosApi.setPos()  //设置打印机
+                .setAutoEnableMark(true)//开启黑标
+                .setEncode(-1)  //设置编码  1 为UNICODE编码  2为UFT-8编码 3 为 CODEPAGE 编码 默认-1
+                .setLanguage(15) // 0 为英语 15简体中文 39 阿拉伯语 21 俄语  默认-1
+                .setPrintSpeed(-1) //  设置打印速度
+                .setMarkDistance(-1) //检测到黑标后走的距离
+                .init();// 初始化打印机 init printer
+
+        //mPosApi.addFeedPaper(true,60); //设置走空纸   最大956mm
+        Log.d(WasteTreatmentApplication.TAG, "initPos: ");
+    }
+
+    private void print(String danwei, String types, String chepai, String zhongliang, String siji, String shoujiren, String time, String code) {
+        TextData textData1 = new TextData();
+        textData1.addConcentration(25);
+        textData1.addFont(BarCode.FONT_ASCII_12x24);
+        textData1.addTextAlign(BarCode.ALIGN_LEFT);
+        textData1.addFontSize(BarCode.NORMAL);
+        textData1.addText("单位：" + danwei);
+        textData1.addText("\n");
+               /* textData1.addText("标号：2020031900000039");
+                textData1.addText("\n");*/
+        textData1.addText("名称：" + types);
+        textData1.addText("\n");
+        textData1.addText("车牌：" + chepai + "  重量：" + zhongliang + "Kg");
+        textData1.addText("\n");
+        textData1.addText("司机：" + siji + "  收集人：" + shoujiren);
+        textData1.addText("\n");
+        textData1.addText("时间：" + time);
+        mPosApi.addText(textData1);
+        BarCodeBean barCodeBean = new BarCodeBean();
+        barCodeBean.setConcentration(25);
+        barCodeBean.setHeight(60);
+        barCodeBean.setWidth(2);// 条码宽度1-4; Width value 1 2 3 4
+        barCodeBean.setText(code);
+        barCodeBean.setBarType(BarCode.CODE128);
+        mPosApi.addBarCode(barCodeBean, ALIGN_MODE.ALIGN_CENTER);
+        mPosApi.addMark();
+        //  mPosApi.addFeedPaper(true, 2);
+        mPosApi.printStart();
+
+
+    }
+
+    public OnPrintEventListener onPrintEventListener = new OnPrintEventListener() {
+        @Override
+        public void onPrintState(int state) {
+            switch (state) {
+                case BarCode.ERR_POS_PRINT_SUCC:
+                    Tips.show("打印成功");
+                    //showToastShort (getString (R.string.toast_print_success));
+                    break;
+                case BarCode.ERR_POS_PRINT_FAILED:
+                    Tips.show("打印错误");
+                    //  showToastShort (getString (R.string.toast_print_error));
+                    break;
+                case BarCode.ERR_POS_PRINT_HIGH_TEMPERATURE:
+                    Tips.show("温度过高");
+                    // showToastShort (getString (R.string.toast_high_temperature));
+                    break;
+                case BarCode.ERR_POS_PRINT_NO_PAPER:
+                    Tips.show("没有纸张");
+                    //showToastShort (getString (R.string.toast_no_paper));
+                    break;
+                case 4:
+                    break;
+            }
+        }
+    };
 }

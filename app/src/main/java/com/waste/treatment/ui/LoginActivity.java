@@ -48,16 +48,12 @@ public class LoginActivity extends AppCompatActivity {
         Utils.makeStatusBarTransparent(this);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//竖屏
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
-
-
         Intent mBootIntent = new Intent(this, MyService.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             this.startForegroundService(mBootIntent);
         } else {
             this.startService(mBootIntent);
         }
-
-
         mBinding.ilTitle.tvTitle.setText(getResources().getString(R.string.login_btn_text));
         waitingDialog = DialogUtil.waitingDialog(LoginActivity.this, "正在登陆···");
         mBinding.loginBtn.setOnClickListener(new View.OnClickListener() {
@@ -72,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
                         ActivityCompat.requestPermissions(LoginActivity.this, Utils.permissionsREAD, 0);
                     } else {
                         waitingDialog.show();
-                        HttpClient.getInstance().geData().loginIn(mBinding.loginNameEdt.getText().toString().trim(), mBinding.loginPwdEdt.getText().toString().trim())
+                        HttpClient.getInstance().geData().loginIn(mBinding.loginNameEdt.getText().toString().trim(), mBinding.loginPwdEdt.getText().toString().trim(),Utils.getIMEI(LoginActivity.this))
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(new Observer<Success>() {
