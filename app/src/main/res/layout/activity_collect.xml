@@ -53,10 +53,36 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="18dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14.5dp"
+                    android:text="类型："
+                    android:textSize="14sp" />
+
+
+                <Spinner
+                    android:id="@+id/sp_lx"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="14sp" />
+            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/color_text_line" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@drawable/bg_edit"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14.5dp"
                     android:text="@string/zhonglei"
-                    android:textSize="14sp"
-                    android:layout_marginStart="14.5dp"/>
+                    android:textSize="14sp" />
 
                 <LinearLayout
                     android:id="@+id/sp_zl"
@@ -64,25 +90,31 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:textSize="14sp" >
-                    <LinearLayout
+                <!--    <LinearLayout
                         android:id="@+id/ll_zhongnei"
                         android:layout_width="match_parent"
                         android:orientation="horizontal"
                         android:layout_height="wrap_content">
-                       <!-- <CheckBox
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="兔子"/>
-                        <CheckBox
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="老鼠"/>
-                        <CheckBox
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="青蛙"/>-->
-                    </LinearLayout>
-                    
+                        &lt;!&ndash; <CheckBox
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:text="兔子"/>
+                         <CheckBox
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:text="老鼠"/>
+                         <CheckBox
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:text="青蛙"/>&ndash;&gt;
+                    </LinearLayout>-->
+                    <com.waste.treatment.ui.FlowGroupView
+                        android:id="@+id/ll_zhongnei"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    </com.waste.treatment.ui.FlowGroupView>
+
                 </LinearLayout>
             </LinearLayout>
             <TextView

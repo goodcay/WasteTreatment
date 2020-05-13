@@ -104,6 +104,18 @@ public interface Api {
     Observable<GetTypesBean> getTypes();
 
     /**
+     * 获取废物类型
+     *
+     * @return
+     */
+
+    @GET("/WhhService.asmx/GetSubTypes")
+    Observable<GetTypesBean> getSubTypes(@Query("typeId") String typeId);
+
+
+
+
+    /**
      * 获取公司
      *
      * @return

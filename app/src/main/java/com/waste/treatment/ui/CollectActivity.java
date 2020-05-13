@@ -17,6 +17,7 @@ import android.printer.sdk.util.PowerUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -59,12 +60,15 @@ import okhttp3.RequestBody;
 public class CollectActivity extends BaseActivity<ActivityCollectBinding> implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
     Map<Integer, Integer> types = new HashMap<>();
     private List<String> typeList;
+    private List<Integer> typeListId;
     private boolean getCompanyIsSucceed = false;
     private boolean getTypeSucceed = false;
     private boolean isImage = false;
     private List<String> companys;
+    private List<String> mLyings;
     private ArrayAdapter<String> adapter;
     private String company;
+    private String Lxing;
     private IPosApi mPosApi;
     private String strTypes = "";
     private ProgressDialog waitingDialog;
@@ -93,6 +97,67 @@ public class CollectActivity extends BaseActivity<ActivityCollectBinding> implem
 
             }
         });
+        mBinding.spLx.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Lxing = Integer.toString(position + 1);
+                mBinding.llZhongnei.removeAllViews();
+                types.clear();
+                HttpClient.getInstance().geData().getSubTypes(Lxing)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<GetTypesBean>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
+
+                            }
+
+                            @Override
+                            public void onNext(GetTypesBean getTypesBean) {
+                                Log.d(WasteTreatmentApplication.TAG, "getTypesBean: " + getTypesBean.toString());
+                                typeList = new ArrayList<>();
+                                typeListId = new ArrayList<>();
+                                if (getTypesBean.getIsSuccess()) {
+                                    for (int i = 0; i < getTypesBean.getContent().size(); i++) {
+                                        Log.d(WasteTreatmentApplication.TAG, "++++++++++++++++++++++>: "+getTypesBean.getContent().get(i).getName()+"  -"+getTypesBean.getContent().get(i).getIndex());
+                                        typeList.add(getTypesBean.getContent().get(i).getName());
+                                        typeListId.add(getTypesBean.getContent().get(i).getOid());
+                                    }
+                                    for (int i = 0; i < typeList.size(); i++) {
+                                      /*  CheckBox cb = new CheckBox(CollectActivity.this);
+                                        cb.setText(typeList.get(i));
+                                        cb.setId(i + 1);
+                                        cb.setOnCheckedChangeListener(CollectActivity.this);
+                                        mBinding.llZhongnei.addView(cb);*/
+                                        addTextView(typeList.get(i),typeListId.get(i));
+                                    }
+                                    getTypeSucceed = true;
+                                    Log.d(WasteTreatmentApplication.TAG, "getTypeSucceed: " + getTypeSucceed);
+                                    isShowContentView();
+                                } else {
+                                    showError();
+                                }
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.d(WasteTreatmentApplication.TAG, "onError2222: " + e.toString());
+
+                            }
+
+                            @Override
+                            public void onComplete() {
+
+                            }
+                        });
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
 
         mBinding.imgBtnPhoto.setOnClickListener(this);
@@ -103,8 +168,25 @@ public class CollectActivity extends BaseActivity<ActivityCollectBinding> implem
 
     }
 
+    /**
+     * 71      * 动态添加布局
+     * 72      * @param str
+     * 73
+     */
+    private void addTextView(String str,int i) {
+        CheckBox child = new CheckBox(this);
+        ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(ViewGroup.MarginLayoutParams.WRAP_CONTENT, ViewGroup.MarginLayoutParams.WRAP_CONTENT);
+        params.setMargins(5, 5, 5, 5);
+        child.setLayoutParams(params);
+        child.setText(str);
+        child.setId(i);
+        child.setOnCheckedChangeListener(CollectActivity.this);
+        mBinding.llZhongnei.addView(child);
+    }
+
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        Log.d(WasteTreatmentApplication.TAG, "onCheckedChanged: "+buttonView.getId());
         if (isChecked) {
             types.put(buttonView.getId(), buttonView.getId());
         } else {
@@ -161,26 +243,27 @@ public class CollectActivity extends BaseActivity<ActivityCollectBinding> implem
 
                     @Override
                     public void onNext(GetTypesBean getTypesBean) {
-                        Log.d(WasteTreatmentApplication.TAG, "getTypesBean: " + getTypesBean.toString());
 
-                        typeList = new ArrayList<>();
+                        Log.d(WasteTreatmentApplication.TAG, "getCarsBean: " + getTypesBean.toString());
+
                         if (getTypesBean.getIsSuccess()) {
+                            mLyings = new ArrayList<>();
                             for (int i = 0; i < getTypesBean.getContent().size(); i++) {
-                                typeList.add(getTypesBean.getContent().get(i).getName());
+                                mLyings.add(getTypesBean.getContent().get(i).getName());
                             }
-                            for (int i = 0; i < typeList.size(); i++) {
-                                CheckBox cb = new CheckBox(CollectActivity.this);
-                                cb.setText(typeList.get(i));
-                                cb.setId(i + 1);
-                                cb.setOnCheckedChangeListener(CollectActivity.this);
-                                mBinding.llZhongnei.addView(cb);
-                            }
+                            adapter = new ArrayAdapter<String>(CollectActivity.this, android.R.layout.simple_spinner_item, mLyings);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            mBinding.spLx.setAdapter(adapter);
                             getTypeSucceed = true;
-                            Log.d(WasteTreatmentApplication.TAG, "getTypeSucceed: " + getTypeSucceed);
                             isShowContentView();
+                            Log.d(WasteTreatmentApplication.TAG, "getCompanyIsSucceed: " + getTypeSucceed + "-------------->" + Lxing);
+
+
                         } else {
+
                             showError();
                         }
+
 
                     }
 
@@ -194,6 +277,8 @@ public class CollectActivity extends BaseActivity<ActivityCollectBinding> implem
 
                     }
                 });
+
+
         HttpClient.getInstance().geData().getCompanys()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -268,13 +353,16 @@ public class CollectActivity extends BaseActivity<ActivityCollectBinding> implem
             case R.id.up_data_btn:
                 if (isFillOut()) {
                     StringBuilder type = new StringBuilder();
+                    strTypes="";
                     for (Map.Entry<Integer, Integer> entry : types.entrySet()) {
                         Log.d(WasteTreatmentApplication.TAG, "strTypes: " + strTypes);
-                        strTypes = strTypes + typeList.get(entry.getValue() - 1) + "、";
+                        strTypes = strTypes + entry.getValue() + "、";
                         type.append(Integer.toString(entry.getValue())).append(";");
                     }
                     if (WasteTreatmentApplication.instance.getRouteId() != null) {
 
+
+                        Log.d(WasteTreatmentApplication.TAG, "UPDATA: "+type.substring(0, type.length() - 1)+"/"+ mBinding.etZhongliang.getText().toString().trim()+"/"+ WasteTreatmentApplication.instance.getUserId()+"/"+ WasteTreatmentApplication.instance.getRouteId()+"/"+ company+"/"+ filePath);
                         genRecyle(type.substring(0, type.length() - 1), mBinding.etZhongliang.getText().toString().trim(), WasteTreatmentApplication.instance.getUserId(), WasteTreatmentApplication.instance.getRouteId(), company, filePath);
                     } else {
                         Tips.show("路线没生成，请生成路线后再上传！");
@@ -327,7 +415,7 @@ public class CollectActivity extends BaseActivity<ActivityCollectBinding> implem
      * @param companyId  公司
      */
     private void genRecyle(String types, final String weight, String operatorId, String routeId, final String companyId, String filePath) {
-        HttpClient.getInstance().geData().genRecyle(Utils.getIMEI(CollectActivity.this),types, weight, operatorId, routeId, companyId, filePath)
+        HttpClient.getInstance().geData().genRecyle(Utils.getIMEI(CollectActivity.this), types, weight, operatorId, routeId, companyId, filePath)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<GenRecyleBean>() {
@@ -342,6 +430,7 @@ public class CollectActivity extends BaseActivity<ActivityCollectBinding> implem
                         Log.d(WasteTreatmentApplication.TAG, "content: " + success.getContent());
                         if (success.getIsSuccess()) {
                             //print(companys.get(Integer.parseInt(companyId)-1),strTypes.substring(0, strTypes.length() - 1),WasteTreatmentApplication.instance.getChepai(),weight,WasteTreatmentApplication.instance.getSiji(),WasteTreatmentApplication.instance.getUserName(), Utils.timeToTime(success.getContent().getRecyleTime()),success.getContent().getCode());
+                            //print(success.getContent().getCompany().getName(), success.getContent().getName(), success.getContent().getRouteId().getCarId().getName(), success.getContent().getWeight(), success.getContent().getRouteId().getDriver().getChineseName(), success.getContent().getRouteId().getBeginOperator().getChineseName(), Utils.timeToTime(success.getContent().getRecyleTime()), success.getContent().getCode());
                             print(success.getContent().getCompany().getName(), success.getContent().getName(), success.getContent().getRouteId().getCarId().getName(), success.getContent().getWeight(), success.getContent().getRouteId().getDriver().getChineseName(), success.getContent().getRouteId().getBeginOperator().getChineseName(), Utils.timeToTime(success.getContent().getRecyleTime()), success.getContent().getCode());
                             cleanMsg();
                             Tips.show("上传成功");
@@ -408,7 +497,7 @@ public class CollectActivity extends BaseActivity<ActivityCollectBinding> implem
                     @Override
                     public void onError(Throwable e) {
                         waitingDialog.cancel();
-                        Log.d(WasteTreatmentApplication.TAG, "上传失败onError: "+e.toString());
+                        Log.d(WasteTreatmentApplication.TAG, "上传失败onError: " + e.toString());
                         Tips.show("上传失败！");
                     }
 
@@ -425,8 +514,8 @@ public class CollectActivity extends BaseActivity<ActivityCollectBinding> implem
      */
     @SuppressLint("ResourceType")
     public void cleanMsg() {
-        for (int i = 0; i < typeList.size(); i++) {
-            CheckBox cb = mBinding.llZhongnei.findViewById(i + 1);
+        for (int i = 0; i < typeListId.size(); i++) {
+            CheckBox cb = mBinding.llZhongnei.findViewById(typeListId.get(i));
             cb.setChecked(false);
         }
         mBinding.etZhongliang.setText("");
@@ -519,7 +608,7 @@ public class CollectActivity extends BaseActivity<ActivityCollectBinding> implem
         TextView tv = v.findViewById(R.id.tv_hint);
         tv.setText("生成路线后才能使用");
         Button btn_add = v.findViewById(R.id.btn_add);
-        Button btn_diss =  v.findViewById(R.id.btn_diss);
+        Button btn_diss = v.findViewById(R.id.btn_diss);
         btn_add.setText("去生成");
         dialog.show();
         dialog.setContentView(v);
@@ -544,7 +633,7 @@ public class CollectActivity extends BaseActivity<ActivityCollectBinding> implem
     protected void onDestroy() {
         super.onDestroy();
         mPosApi.closeDev();
-       // mPosApi.closePos();
+        // mPosApi.closePos();
         // printer.Close();
     }
 }
